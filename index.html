@@ -198,7 +198,20 @@
     .page-header p { color: var(--text2); font-size: 13px; margin-top: 4px; }
 
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 1.75rem; }
-    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; border-left: 3px solid var(--border2); position: relative; overflow: hidden; transition: box-shadow 0.15s; }
+    .stat-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .stat-card.color-green { border-left-color: var(--success); }
+    .stat-card.color-orange { border-left-color: var(--warn); }
+    .stat-card.color-red { border-left-color: var(--danger); }
+    .stat-card.color-blue { border-left-color: var(--info); }
+    .stat-card.color-accent { border-left-color: var(--accent-mid); }
+    .stat-card-icon { position: absolute; right: 14px; top: 14px; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .stat-card-icon svg { width: 16px; height: 16px; }
+    .stat-card.color-green .stat-card-icon { background: var(--success-light); color: var(--success); }
+    .stat-card.color-orange .stat-card-icon { background: var(--warn-light); color: var(--warn); }
+    .stat-card.color-red .stat-card-icon { background: var(--danger-light); color: var(--danger); }
+    .stat-card.color-blue .stat-card-icon { background: var(--info-light); color: var(--info); }
+    .stat-card.color-accent .stat-card-icon { background: var(--accent-light); color: var(--accent-mid); }
     .stat-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
     .stat-value { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
     .stat-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
@@ -216,7 +229,8 @@
     th { text-align: left; padding: 10px 14px; font-size: 11px; font-weight: 600; color: var(--text3); letter-spacing: 0.4px; text-transform: uppercase; border-bottom: 1px solid var(--border); background: var(--surface2); }
     td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--bg); }
+    tbody tr:nth-child(even) td { background: #fafaf8; }
+    tr:hover td { background: var(--accent-light) !important; transition: background 0.1s; }
     .tracking-no { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent-mid); font-weight: 500; }
 
     .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
@@ -230,8 +244,9 @@
     .modal { background: var(--surface); border-radius: var(--radius-lg); width: 560px; max-width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
     .modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
     .modal-header h3 { font-size: 16px; font-weight: 600; }
-    .modal-close { width: 28px; height: 28px; border: none; background: var(--surface2); border-radius: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text2); }
+    .modal-close { width: 28px; height: 28px; border: none; background: var(--surface2); border-radius: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text2); transition: background 0.12s; }
     .modal-close:hover { background: var(--border); }
+    .modal-close svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
     .modal-body { padding: 1.5rem; }
     .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
 
@@ -251,8 +266,9 @@
     .timeline-note { font-size: 12px; color: var(--text2); }
 
     .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text3); }
-    .empty-icon { font-size: 36px; margin-bottom: 10px; }
-    .empty-state p { font-size: 14px; }
+    .empty-icon { margin-bottom: 12px; display: flex; justify-content: center; }
+    .empty-icon svg { width: 56px; height: 56px; opacity: 0.35; }
+    .empty-state p { font-size: 14px; color: var(--text3); }
 
     #toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--text); color: white; padding: 10px 18px; border-radius: 9px; font-size: 13px; font-weight: 500; transform: translateY(100px); opacity: 0; transition: all 0.25s; z-index: 9998; }
     #toast.show { transform: translateY(0); opacity: 1; }
@@ -271,7 +287,9 @@
     /* TABLO İÇİ YAZDIR VE DETAY BUTON HİZALAMASI (MASAÜSTÜ) */
     .table-actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
 
-    .welcome-banner { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); border-radius: var(--radius-lg); padding: 1.5rem; color: white; margin-bottom: 1.75rem; display: flex; justify-content: space-between; align-items: center; }
+    .welcome-banner { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); border-radius: var(--radius-lg); padding: 1.5rem; color: white; margin-bottom: 1.75rem; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; }
+    .welcome-banner::before { content: ''; position: absolute; right: -30px; top: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.06); pointer-events: none; }
+    .welcome-banner::after { content: ''; position: absolute; right: 60px; bottom: -40px; width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,0.04); pointer-events: none; }
     .welcome-banner h2 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
     .welcome-banner p { font-size: 13px; opacity: 0.8; }
 
@@ -290,7 +308,7 @@
 
     @media (max-width: 768px) {
       body { font-size: 13px; }
-      .main { margin-left: 0 !important; padding: 80px 1rem 85px 1rem !important; min-height: 100vh; }
+      .main { margin-left: 0 !important; padding: 80px 1rem 88px 1rem !important; min-height: 100vh; }
       .page-header h1 { font-size: 20px; }
       
       .sidebar { width: 0; height: 0; background: transparent; border: none; box-shadow: none; z-index: 1000; pointer-events: none; }
@@ -299,11 +317,13 @@
       .user-info { display: none; }
       .logout-btn { width: auto; padding: 7px 14px; background: var(--danger-light); color: var(--danger); border: 1px solid #F7C1C1; font-weight: 600; border-radius: 8px; font-size: 11px; }
       
-      .nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 0; z-index: 1000; pointer-events: auto; }
+      .nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 0; z-index: 1000; pointer-events: auto; }
       .nav-section { display: none !important; }
-      .nav-item { flex-direction: column; justify-content: center; align-items: center; padding: 6px 0; gap: 4px; font-size: 10px; font-weight: 600; width: 20%; border-radius: 0; color: var(--text3); }
+      .nav-item { flex-direction: column; justify-content: center; align-items: center; padding: 6px 4px; gap: 3px; font-size: 10px; font-weight: 600; width: 20%; border-radius: 0; color: var(--text3); position: relative; }
       .nav-item.active { background: transparent; color: var(--accent-mid); }
-      .nav-item svg { width: 20px; height: 20px; margin: 0; }
+      .nav-item.active::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 2px; background: var(--accent-mid); border-radius: 2px 2px 0 0; }
+      .nav-item svg { width: 22px; height: 22px; margin: 0; transition: transform 0.15s; }
+      .nav-item.active svg { transform: scale(1.1); }
       
       .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
       .form-row { grid-template-columns: 1fr; gap: 10px; }
@@ -325,7 +345,10 @@
       table, thead, tbody, th, td, tr { display: block; width: 100%; }
       thead tr { display: none; } 
       
-      tr { margin-bottom: 10px; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; background: var(--surface); box-shadow: var(--shadow); }
+      tr { margin-bottom: 10px; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; background: var(--surface); box-shadow: var(--shadow); animation: fadeSlideIn 0.2s ease-out; }
+      tbody tr:nth-child(even) td { background: transparent !important; }
+      tr:hover td { background: transparent !important; }
+      @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
       td { border: none !important; padding: 4px 0 !important; text-align: right; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
       td::before { content: attr(data-label); font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; }
       td:last-child { margin-top: 6px; padding-top: 8px !important; border-top: 1px solid var(--surface2) !important; justify-content: center; }
@@ -356,7 +379,7 @@
   <div class="modal" style="width:680px;">
     <div class="modal-header">
       <h3>📋 Supabase SQL Tabloları</h3>
-      <button class="modal-close" onclick="document.getElementById('sql-modal').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('sql-modal').style.display='none'"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body">
       <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Supabase Dashboard → SQL Editor → New Query → Aşağıdakini yapıştırın → Run:</p>
@@ -556,7 +579,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3 id="modal-title">Kargo Detayı</h3>
-      <button class="modal-close" onclick="closeModal('kargo-modal')">✕</button>
+      <button class="modal-close" onclick="closeModal('kargo-modal')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body" id="modal-body"></div>
     <div class="modal-footer" id="modal-footer"></div>
@@ -567,7 +590,7 @@
   <div class="modal">
     <div class="modal-header">
       <h3>Kargo Düzenle</h3>
-      <button class="modal-close" onclick="closeModal('edit-modal')">✕</button>
+      <button class="modal-close" onclick="closeModal('edit-modal')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body" id="edit-body"></div>
     <div class="modal-footer">
@@ -888,15 +911,16 @@ async function loadMusteriDashboard() {
   // Sadece bu aya ait kargoları filtrele
   const currentMonthCargos = all.filter(k => k.created_at.startsWith(currentMonth));
   
-  const stats = [ 
-    { label: 'Toplam Kargo', value: all.length, sub: 'tüm zamanlar' }, 
-    { label: 'Beklemede', value: currentMonthCargos.filter(k=>k.durum==='beklemede').length, sub: 'bu ay' }, 
-    { label: 'Teslim Edildi', value: currentMonthCargos.filter(k=>k.durum==='teslim').length, sub: 'bu ay' }, 
-    { label: 'İptal Edilen', value: currentMonthCargos.filter(k=>k.durum==='iptal').length, sub: 'bu ay' } 
+  const statConfig = [ 
+    { label: 'Toplam Kargo', value: all.length, sub: 'tüm zamanlar', color: 'accent', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>' }, 
+    { label: 'Beklemede', value: currentMonthCargos.filter(k=>k.durum==='beklemede').length, sub: 'bu ay', color: 'orange', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' }, 
+    { label: 'Teslim Edildi', value: currentMonthCargos.filter(k=>k.durum==='teslim').length, sub: 'bu ay', color: 'green', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg>' }, 
+    { label: 'İptal Edilen', value: currentMonthCargos.filter(k=>k.durum==='iptal').length, sub: 'bu ay', color: 'red', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' }
   ];
   
-  document.getElementById('musteri-stats').innerHTML = stats.map(s => `
-    <div class="stat-card">
+  document.getElementById('musteri-stats').innerHTML = statConfig.map(s => `
+    <div class="stat-card color-${s.color}">
+      <div class="stat-card-icon">${s.icon}</div>
       <div class="stat-label">${s.label}</div>
       <div class="stat-value">${s.value}</div>
       <div class="stat-sub">${s.sub}</div>
@@ -964,12 +988,13 @@ async function loadMusteriraporlar() {
   const odenenCari = tahsilatli.filter(k => k.odeme_durumu === 'odendi').reduce((sum, k) => sum + parseFloat(k.ucret || 0), 0);
 
   document.getElementById('musteri-rapor-stats').innerHTML = [
-    { label: 'Toplam Gönderilen Kargo', value: toplam + ' Adet' },
-    { label: 'Sırada / Onay Bekleyen', value: beklemede + ' Adet' },
-    { label: 'Teslim Edilen Başarılı', value: teslim + ' Adet' },
-    { label: 'İptal / İade Olanlar', value: iptal + ' Adet' }
+    { label: 'Toplam Gönderilen Kargo', value: toplam + ' Adet', color: 'accent', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>' },
+    { label: 'Sırada / Onay Bekleyen', value: beklemede + ' Adet', color: 'orange', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' },
+    { label: 'Teslim Edilen Başarılı', value: teslim + ' Adet', color: 'green', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg>' },
+    { label: 'İptal / İade Olanlar', value: iptal + ' Adet', color: 'red', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' }
   ].map(s => `
-    <div class="stat-card">
+    <div class="stat-card color-${s.color}">
+      <div class="stat-card-icon">${s.icon}</div>
       <div class="stat-label">${s.label}</div>
       <div class="stat-value" style="font-size:20px">${s.value}</div>
     </div>`).join('');
@@ -991,15 +1016,16 @@ async function loadAdminDashboard() {
   
   const totalGelir = currentMonthCargos.filter(k=>k.odeme_durumu==='odendi').reduce((s,k)=>s+parseFloat(k.ucret||0),0);
   
-  const stats = [ 
-    { label: 'Toplam Kargo', value: all.length, sub: 'tüm zamanlar' }, 
-    { label: 'Teslim Edildi', value: currentMonthCargos.filter(k=>k.durum==='teslim').length, sub: 'bu ay' }, 
-    { label: 'Bekleyen Ödeme', value: currentMonthCargos.filter(k=>k.odeme_durumu==='bekliyor').length, sub: 'bu ay' }, 
-    { label: 'Toplam Gelir', value: '₺' + totalGelir.toLocaleString('tr-TR', {minimumFractionDigits:2}), sub: 'bu ay' } 
+  const adminStatConfig = [ 
+    { label: 'Toplam Kargo', value: all.length, sub: 'tüm zamanlar', color: 'accent', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>' }, 
+    { label: 'Teslim Edildi', value: currentMonthCargos.filter(k=>k.durum==='teslim').length, sub: 'bu ay', color: 'green', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 6 9 17 4 12"/></svg>' }, 
+    { label: 'Bekleyen Ödeme', value: currentMonthCargos.filter(k=>k.odeme_durumu==='bekliyor').length, sub: 'bu ay', color: 'orange', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>' }, 
+    { label: 'Toplam Gelir', value: '₺' + totalGelir.toLocaleString('tr-TR', {minimumFractionDigits:2}), sub: 'bu ay', color: 'blue', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>' }
   ];
   
-  document.getElementById('admin-stats').innerHTML = stats.map(s => `
-    <div class="stat-card">
+  document.getElementById('admin-stats').innerHTML = adminStatConfig.map(s => `
+    <div class="stat-card color-${s.color}">
+      <div class="stat-card-icon">${s.icon}</div>
       <div class="stat-label">${s.label}</div>
       <div class="stat-value" style="font-size:${typeof s.value==='string'&&s.value.length>6?'18px':'24px'}">${s.value}</div>
       <div class="stat-sub">${s.sub}</div>
@@ -1457,7 +1483,7 @@ function durumLabel(d) {
 }
 
 function emptyState(msg) { 
-  return `<div class="empty-state"><div class="empty-icon">📦</div><p>${msg}</p></div>`; 
+  return `<div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><p>${msg}</p></div>`; 
 }
 
 function fmtDate(d) { 
