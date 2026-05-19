@@ -539,8 +539,8 @@ tr:hover td { background: var(--bg); }
   .search-bar svg { z-index: 2; left: 12px; pointer-events: none; } /* İkonun tıklamayı engellemesini önler */
   .search-bar input { padding-left: 36px !important; } /* Yazıyı ikondan uzağa iter */
   
-  /* Filtrelerin Tıklanmama Sorunu Çözüldü */
-  .filters { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; position: relative; z-index: 15; pointer-events: auto; }
+  .filters { width: 100%; display: flex; flex-direction: row; gap: 10px; }
+  .filters select { flex: 1; width: 100%; min-width: 0; }
   
   /* Genel kutuları çok az küçülttük */
   input, select, textarea, .btn { padding: 10px !important; font-size: 13px !important; } 
