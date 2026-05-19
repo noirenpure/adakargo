@@ -1043,7 +1043,6 @@ function updateUserInfo() {
 
 // ─── YENİ SIRALI TAKİP KODU OLUŞTURUCU ───
 async function getNextTrackingNo() {
-  // Veritabanındaki EFE ile başlayan en son kargoyu bul
   const { data, error } = await sb
     .from('kargolar')
     .select('tracking_no')
@@ -1051,36 +1050,32 @@ async function getNextTrackingNo() {
     .order('created_at', { ascending: false })
     .limit(1);
 
-  // Eğer sistemde hiç EFE kargosu yoksa 1'den başla
   if (error || !data || data.length === 0) {
     return 'EFE1';
   }
 
-  // En son kargo kodunu al (Örn: EFE15)
-  const sonKargoKodu = data[0].tracking_no; 
-  // Sadece sayı kısmını ayıkla ve 1 artır (Örn: 15'i bul ve 16 yap)
+  const sonKargoKodu = data[0].tracking_no;
   const sayiKismi = parseInt(sonKargoKodu.replace('EFE', ''));
   const siradakiSayi = isNaN(sayiKismi) ? 1 : sayiKismi + 1;
 
   return 'EFE' + siradakiSayi;
 }
 
-// ─── CREATE KARGO (GÜNCELLENDİ) ───
+// ─── CREATE KARGO ───
 async function createKargo() {
   try {
     const isim = currentProfile ? `${currentProfile.first_name} ${currentProfile.last_name}` : 'Sistem Kullanıcısı';
     const tel = currentProfile ? currentProfile.phone : '-';
 
-    // Butonu geçici olarak devre dışı bırakıp "Bekleyin" yazısı gösterelim (Çifte tıklamayı önler)
     const btn = document.querySelector('#page-yenikargo .btn-primary');
     btn.disabled = true;
     btn.textContent = 'Kargo Oluşturuluyor...';
 
-    // Yeni ve sıralı takip kodumuzu alıyoruz
+    // İŞTE BURASI DÜZELDİ: Artık eski genTrackingNo değil, yeni EFE kodunu çağırıyoruz
     const yeniTakipNo = await getNextTrackingNo();
 
     const data = {
-      tracking_no: yeniTakipNo, // Artık yeni kodumuz kullanılıyor
+      tracking_no: yeniTakipNo, // <--- Hata veren yer burasıydı, düzelttik!
       user_id: currentUser.id,
       g_adsoyad: isim,
       g_tel: tel || '-',
@@ -1108,7 +1103,6 @@ async function createKargo() {
 
     await sb.from('kargo_gecmis').insert({ kargo_id: newKargo.id, durum: 'beklemede', not: 'Kargo sisteme girildi' });
 
-    // Formu temizle
     document.getElementById('a-adsoyad').value = '';
     document.getElementById('a-tel').value = '';
     document.getElementById('a-il').value = '';
@@ -1119,7 +1113,6 @@ async function createKargo() {
     toast('Kargo başarıyla oluşturuldu! (Takip No: ' + yeniTakipNo + ')', 'success');
     showPage('page-kargolarim');
     
-    // İşlem bitince butonu eski haline getir
     btn.disabled = false; btn.textContent = 'Kargo Oluştur';
 
   } catch (err) {
@@ -1129,64 +1122,7 @@ async function createKargo() {
     if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; }
   }
 }
-
-// ─── CREATE KARGO ───
-async function createKargo() {
-  try {
-    // 1. Profil bilgisi gelmediyse bile kodun çökmesini engelleyen güvenlik önlemi
-    const isim = currentProfile ? `${currentProfile.first_name} ${currentProfile.last_name}` : 'Sistem Kullanıcısı';
-    const tel = currentProfile ? currentProfile.phone : '-';
-
-    const data = {
-      tracking_no: genTrackingNo(),
-      user_id: currentUser.id,
-      g_adsoyad: isim,
-      g_tel: tel || '-',
-      g_il: '-', 
-      g_adres: 'Sistemde Kayıtlı Adres',
-      
-      a_adsoyad: document.getElementById('a-adsoyad').value.trim(),
-      a_tel: document.getElementById('a-tel').value.trim(),
-      a_il: document.getElementById('a-il').value.trim(),
-      a_adres: document.getElementById('a-adres').value.trim(),
-      odeme_tipi: document.getElementById('odeme-tipi').value,
-      ucret: parseFloat(document.getElementById('ucret').value) || 0,
-      aciklama: document.getElementById('aciklama').value.trim(),
-      durum: 'beklemede',
-      odeme_durumu: 'bekliyor',
-    };
-
-    // 2. Veritabanına kaydet
-    const { data: newKargo, error } = await sb.from('kargolar').insert(data).select().single();
-
-    // Veritabanı (Supabase) tarafında bir ret yediyseniz bunu ekranda göster
-    if (error) {
-      alert('Veritabanı Hatası: ' + error.message);
-      return;
-    }
-
-    // 3. Geçmişe not düş
-    await sb.from('kargo_gecmis').insert({ kargo_id: newKargo.id, durum: 'beklemede', not: 'Kargo sisteme girildi' });
-
-    // 4. Formu temizle
-    document.getElementById('a-adsoyad').value = '';
-    document.getElementById('a-tel').value = '';
-    document.getElementById('a-il').value = '';
-    document.getElementById('a-adres').value = '';
-    document.getElementById('ucret').value = '';
-    document.getElementById('aciklama').value = '';
-
-    // 5. Başarı mesajı ve yönlendirme
-    toast('Kargo başarıyla oluşturuldu!', 'success');
-    showPage('page-kargolarim');
-    
-  } catch (err) {
-    // KONSOL GİZLİ OLSA BİLE kodda bir hata çıkarsa ekrana zorla uyarı fırlat!
-    alert('Kod Hatası: ' + err.message);
-    console.error(err);
-  }
-}
-
+  
 // ─── MUSTERI DASHBOARD ───
 async function loadMusteriDashboard() {
   const { data } = await sb.from('kargolar').select('*').eq('user_id', currentUser.id);
