@@ -1335,9 +1335,14 @@ async function showKargoDetail(id) {
       </div>
     </div>`;
 
+// --- KİMLİK VE YETKİ KONTROLÜ ---
   const isAdmin = currentProfile?.role === 'admin';
+  const isOwner = k.user_id === currentUser.id; // Kargo bu müşteriye mi ait?
+  
+  // 1. Herkes için ortak fiş butonu
   let footerHtml = `<button class="btn btn-outline btn-sm" onclick="printKargoFisi('${k.id}')" style="margin-right:auto;">🖨️ Fiş Yazdır</button>`;
   
+  // 2. Eğer ADMIN ise tüm yetkileri ver
   if (isAdmin) {
     footerHtml += `
       <select id="durum-select" style="padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);outline:none;">
@@ -1351,9 +1356,23 @@ async function showKargoDetail(id) {
         <option value="odendi" ${k.odeme_durumu==='odendi'?'selected':''}>Ödendi</option>
       </select>
       <button class="btn btn-primary btn-sm" onclick="updateKargoDurum('${k.id}')">Güncelle</button>
-      <button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')">Düzenle</button>`;
+      <button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')">Düzenle</button>
+      <button class="btn btn-danger-outline btn-sm" onclick="deleteKargo('${k.id}')">Sil</button>`;
+  } 
+  // 3. Eğer MÜŞTERİ (Kargo Sahibi) ise
+  else if (isOwner) {
+    // Sadece "Beklemede" durumundaysa düzenleme/silme izni ver
+    if (k.durum === 'beklemede') {
+      footerHtml += `
+        <button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')">Düzenle</button>
+        <button class="btn btn-danger-outline btn-sm" onclick="deleteKargo('${k.id}')">Sil</button>`;
+    } else {
+      // Kargo yola çıktıysa müdahale edemez
+      footerHtml += `<span style="font-size:11px;color:var(--text3);font-style:italic;">İşlem görmüş kargolar düzenlenemez.</span>`;
+    }
   }
   
+  // Alt kısmı ekrana bas ve modalı aç
   document.getElementById('modal-footer').innerHTML = footerHtml;
   document.getElementById('kargo-modal').style.display = 'flex';
 }
@@ -1511,6 +1530,30 @@ function toast(msg, type='') {
     if (e.target.id === id) closeModal(id);
   });
 });
+
+// ─── KARGO SİLME FONKSİYONU ───
+async function deleteKargo(id) {
+  const onay = confirm('Bu kargoyu silmek istediğinize emin misiniz? Bu işlem geri alınamaz.');
+  if (!onay) return;
+
+  const { error } = await sb.from('kargolar').delete().eq('id', id);
+  
+  if (error) {
+    alert('Silinirken bir hata oluştu: ' + error.message);
+    return;
+  }
+  
+  toast('Kargo başarıyla silindi!', 'success');
+  closeModal('kargo-modal');
+  
+  // Bulunduğumuz sayfayı güncelle
+  const activePage = document.querySelector('.page.active')?.id;
+  if (activePage === 'page-kargolarim') loadKargolarim();
+  else if (activePage === 'page-tumkargolar') loadAdminKargolar();
+  else if (activePage === 'page-musteridashboard') loadMusteriDashboard();
+}
+
+
 
 // ─── KARGO FİŞİ YAZDIRMA ───
 async function printKargoFisi(id) {
