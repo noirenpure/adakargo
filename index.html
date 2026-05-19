@@ -8,56 +8,163 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F5F4F0; --surface: #FFFFFF; --surface2: #F0EEE8; --border: #E2DFD6; --border2: #C8C4BA; 
-      --text: #1A1916; --text2: #6B6860; --text3: #9C9A94; --accent: #1A3A2A; --accent-light: #E8F2EC; 
-      --accent-mid: #2D6B48; --danger: #C0392B; --danger-light: #FDECEA; --warn: #B7600E; --warn-light: #FEF3E6; 
-      --success: #1E6B3A; --success-light: #E8F5EE; --info: #1A4A7A; --info-light: #E8F0F8; 
-      --radius: 10px; --radius-lg: 14px; --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+      --bg: #F5F4F0;
+      --surface: #FFFFFF;
+      --surface2: #F0EEE8;
+      --border: #E2DFD6;
+      --border2: #C8C4BA;
+      --text: #1A1916;
+      --text2: #6B6860;
+      --text3: #9C9A94;
+      --accent: #1A3A2A;
+      --accent-light: #E8F2EC;
+      --accent-mid: #2D6B48;
+      --danger: #C0392B;
+      --danger-light: #FDECEA;
+      --warn: #B7600E;
+      --warn-light: #FEF3E6;
+      --success: #1E6B3A;
+      --success-light: #E8F5EE;
+      --info: #1A4A7A;
+      --info-light: #E8F0F8;
+      --radius: 10px;
+      --radius-lg: 14px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
 
-    select { 
-      -webkit-appearance: none; -moz-appearance: none; appearance: none; 
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%231A3A2A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important; 
-      background-repeat: no-repeat !important; background-position: right 12px center !important; 
-      background-size: 16px !important; padding-right: 36px !important; cursor: pointer; 
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%231A3A2A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 12px center !important;
+      background-size: 16px !important;
+      padding-right: 36px !important;
+      cursor: pointer;
     }
     select::-ms-expand { display: none; }
 
-    #config-modal { position: fixed; inset: 0; background: rgba(10,10,8,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-    .config-box { background: var(--surface); border-radius: var(--radius-lg); padding: 2rem; width: 480px; max-width: 95vw; }
+    #config-modal {
+      position: fixed; inset: 0;
+      background: rgba(10,10,8,0.7);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+    }
+    .config-box {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      width: 480px;
+      max-width: 95vw;
+    }
     .config-box h2 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
     .config-box p { color: var(--text2); margin-bottom: 1.5rem; font-size: 13px; line-height: 1.6; }
     .config-box label { display: block; font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 4px; }
-    .config-box input { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: 'DM Mono', monospace; margin-bottom: 1rem; background: var(--bg); color: var(--text); outline: none; }
+    .config-box input {
+      width: 100%; padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 13px; font-family: 'DM Mono', monospace;
+      margin-bottom: 1rem;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+    }
     .config-box input:focus { border-color: var(--accent-mid); }
-    .config-note { background: var(--info-light); border: 1px solid #B5D4F4; border-radius: var(--radius); padding: 10px 14px; font-size: 12px; color: var(--info); margin-bottom: 1.5rem; line-height: 1.6; }
-    .config-note code { font-family: 'DM Mono', monospace; background: rgba(255,255,255,0.6); padding: 1px 4px; border-radius: 4px; }
 
-    #auth-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); }
-    .auth-card { background: var(--surface); border-radius: var(--radius-lg); padding: 2.5rem; width: 420px; max-width: 95vw; box-shadow: var(--shadow); border: 1px solid var(--border); }
-    .auth-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
-    .auth-logo-icon { width: 38px; height: 38px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    #auth-screen {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg);
+    }
+    .auth-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      width: 420px;
+      max-width: 95vw;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .auth-logo {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 2rem;
+    }
+    .auth-logo-icon {
+      width: 38px; height: 38px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
     .auth-logo-icon svg { width: 20px; height: 20px; fill: none; stroke: white; stroke-width: 2; }
     .auth-logo span { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
     .auth-logo sub { font-size: 11px; color: var(--text3); display: block; line-height: 1; }
-    .auth-tabs { display: flex; gap: 4px; background: var(--surface2); padding: 4px; border-radius: var(--radius); margin-bottom: 1.5rem; }
-    .auth-tab { flex: 1; padding: 7px 12px; border: none; background: none; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text2); transition: all 0.15s; }
+    .auth-tabs {
+      display: flex; gap: 4px;
+      background: var(--surface2);
+      padding: 4px;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+    }
+    .auth-tab {
+      flex: 1; padding: 7px 12px;
+      border: none; background: none;
+      border-radius: 7px;
+      font-size: 13px; font-weight: 500; cursor: pointer;
+      color: var(--text2);
+      transition: all 0.15s;
+    }
     .auth-tab.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 5px; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); outline: none; transition: border-color 0.15s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent-mid); background: var(--surface); }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 13px; font-family: 'DM Sans', sans-serif;
+      background: var(--bg); color: var(--text);
+      outline: none; transition: border-color 0.15s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--accent-mid);
+      background: var(--surface);
+    }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .btn { width: 100%; padding: 10px; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    .btn {
+      width: 100%; padding: 10px;
+      border: none; border-radius: var(--radius);
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      transition: all 0.15s;
+    }
     .btn-primary { background: var(--accent); color: white; }
     .btn-primary:hover { background: var(--accent-mid); }
     .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-outline { background: none; border: 1px solid var(--border2); color: var(--text); }
+    .btn-outline {
+      background: none; border: 1px solid var(--border2);
+      color: var(--text);
+    }
     .btn-outline:hover { background: var(--surface2); }
-    .btn-danger-outline { background: none; border: 1px solid #E2B0AA; color: var(--danger); font-size: 13px; padding: 7px 14px; width: auto; border-radius: var(--radius); }
+    .btn-danger-outline {
+      background: none; border: 1px solid #E2B0AA;
+      color: var(--danger); font-size: 13px;
+      padding: 7px 14px; width: auto;
+      border-radius: var(--radius);
+    }
     .btn-sm { width: auto; padding: 6px 14px; font-size: 12px; border-radius: 7px; }
     .auth-error { background: var(--danger-light); border: 1px solid #F7C1C1; color: var(--danger); padding: 10px 14px; border-radius: var(--radius); font-size: 13px; margin-bottom: 14px; }
     .auth-switch { text-align: center; margin-top: 1rem; font-size: 13px; color: var(--text2); }
@@ -775,11 +882,17 @@ async function loadMusteriDashboard() {
   const { data } = await sb.from('kargolar').select('*').eq('user_id', currentUser.id); 
   const all = data || [];
   
+  // İçinde bulunduğumuz ayı bul (Örn: "2026-05")
+  const currentMonth = new Date().toISOString().slice(0,7);
+  
+  // Sadece bu aya ait kargoları filtrele
+  const currentMonthCargos = all.filter(k => k.created_at.startsWith(currentMonth));
+  
   const stats = [ 
     { label: 'Toplam Kargo', value: all.length, sub: 'tüm zamanlar' }, 
-    { label: 'Beklemede', value: all.filter(k=>k.durum==='beklemede').length, sub: 'onay bekleniyor' }, 
-    { label: 'Teslim Edildi', value: all.filter(k=>k.durum==='teslim').length, sub: 'tamamlanan' }, 
-    { label: 'İptal Edilen', value: all.filter(k=>k.durum==='iptal').length, sub: 'iptal' } 
+    { label: 'Beklemede', value: currentMonthCargos.filter(k=>k.durum==='beklemede').length, sub: 'bu ay' }, 
+    { label: 'Teslim Edildi', value: currentMonthCargos.filter(k=>k.durum==='teslim').length, sub: 'bu ay' }, 
+    { label: 'İptal Edilen', value: currentMonthCargos.filter(k=>k.durum==='iptal').length, sub: 'bu ay' } 
   ];
   
   document.getElementById('musteri-stats').innerHTML = stats.map(s => `
@@ -789,8 +902,9 @@ async function loadMusteriDashboard() {
       <div class="stat-sub">${s.sub}</div>
     </div>`).join('');
     
-  const son5 = all.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5); 
-  document.getElementById('musteri-son-kargolar').innerHTML = son5.length ? kargoTable(son5, false) : emptyState('Henüz kargo yok');
+  // Son Kargolarım listesinde de sadece BU AYIN kargolarını göster
+  const son5 = currentMonthCargos.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5); 
+  document.getElementById('musteri-son-kargolar').innerHTML = son5.length ? kargoTable(son5, false) : emptyState('Bu ay henüz kargo yok');
 }
 
 let musteriKargolarAll = [];
@@ -870,25 +984,31 @@ async function loadMusteriraporlar() {
 async function loadAdminDashboard() {
   const { data: kargolar } = await sb.from('kargolar').select('*'); 
   const all = kargolar || [];
-  const totalGelir = all.filter(k=>k.odeme_durumu==='odendi').reduce((s,k)=>s+parseFloat(k.ucret||0),0);
+  
+  // İçinde bulunduğumuz ayı bul
+  const currentMonth = new Date().toISOString().slice(0,7);
+  const currentMonthCargos = all.filter(k => k.created_at.startsWith(currentMonth));
+  
+  const totalGelir = currentMonthCargos.filter(k=>k.odeme_durumu==='odendi').reduce((s,k)=>s+parseFloat(k.ucret||0),0);
   
   const stats = [ 
-    { label: 'Toplam Kargo', value: all.length }, 
-    { label: 'Teslim Edildi', value: all.filter(k=>k.durum==='teslim').length }, 
-    { label: 'Bekleyen Ödeme', value: all.filter(k=>k.odeme_durumu==='bekliyor').length }, 
-    { label: 'Toplam Gelir', value: '₺' + totalGelir.toLocaleString('tr-TR', {minimumFractionDigits:2}) } 
+    { label: 'Toplam Kargo', value: all.length, sub: 'tüm zamanlar' }, 
+    { label: 'Teslim Edildi', value: currentMonthCargos.filter(k=>k.durum==='teslim').length, sub: 'bu ay' }, 
+    { label: 'Bekleyen Ödeme', value: currentMonthCargos.filter(k=>k.odeme_durumu==='bekliyor').length, sub: 'bu ay' }, 
+    { label: 'Toplam Gelir', value: '₺' + totalGelir.toLocaleString('tr-TR', {minimumFractionDigits:2}), sub: 'bu ay' } 
   ];
   
   document.getElementById('admin-stats').innerHTML = stats.map(s => `
     <div class="stat-card">
       <div class="stat-label">${s.label}</div>
       <div class="stat-value" style="font-size:${typeof s.value==='string'&&s.value.length>6?'18px':'24px'}">${s.value}</div>
+      <div class="stat-sub">${s.sub}</div>
     </div>`).join('');
     
-  const son = all.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5); 
-  document.getElementById('admin-son-kargolar').innerHTML = son.length ? kargoTableSmall(son) : emptyState('Kargo yok');
+  const son = currentMonthCargos.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5); 
+  document.getElementById('admin-son-kargolar').innerHTML = son.length ? kargoTableSmall(son) : emptyState('Bu ay kargo yok');
   
-  const bek = all.filter(k=>k.odeme_durumu==='bekliyor').slice(0,5); 
+  const bek = currentMonthCargos.filter(k=>k.odeme_durumu==='bekliyor').slice(0,5); 
   document.getElementById('admin-bekleyen-odemeler').innerHTML = bek.length ? odemelerTableSmall(bek) : emptyState('Bekleyen ödeme yok');
 }
 
@@ -1136,7 +1256,7 @@ async function showKargoDetail(id) {
   } 
   
   footerHtml += `<div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">`;
-  footerHtml += `<button class="btn btn-outline btn-sm" onclick="printKargoFisi('${k.id}')">🖨️ Fiş Yazdır</button>`;
+  footerHtml += `<button class="btn btn-outline btn-sm print-btn-desktop" onclick="printKargoFisi('${k.id}')">🖨️ Fiş Yazdır</button>`;
   
   if (isAdmin) { 
     footerHtml += `
@@ -1269,7 +1389,12 @@ function kargoTable(data, isAdmin) {
             <td data-label="Gönderici">${k.g_adsoyad}<br><span style="font-size:11px;color:var(--text3)">${k.g_il||''}</span></td>
             <td data-label="Alıcı">${k.a_adsoyad}<br><span style="font-size:11px;color:var(--text3)">${k.a_il||''}</span></td>
             <td data-label="Kargo Durumu">${badgeHtml(k.durum)}</td>
-            <td data-label="Ödeme Tutarı">${badgeOdeme(k.odeme_durumu)}<br><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)">₺${parseFloat(k.ucret||0).toFixed(2)}</span></td>
+            <td data-label="Ödeme Tutarı">
+              <div style="display:flex; align-items:center; gap:6px;">
+                ${badgeOdeme(k.odeme_durumu)}
+                <span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--text2)">₺${parseFloat(k.ucret||0).toFixed(2)}</span>
+              </div>
+            </td>
             <td data-label="İşlem Tarihi" style="font-size:12px;color:var(--text3)">${fmtDate(k.created_at)}</td>
             <td data-label="İşlem">
               <div class="table-actions">
