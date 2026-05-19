@@ -1352,46 +1352,62 @@ async function showKargoDetail(id) {
   const isAdmin = currentProfile?.role === 'admin';
   const isOwner = k.user_id === currentUser.id; 
   
-  // Modal alt bilgisinin esnek olmasını ve sığmazsa alt satıra geçmesini (ezilmemesini) sağlıyoruz
-  document.getElementById('modal-footer').style.flexWrap = 'wrap';
-  document.getElementById('modal-footer').style.alignItems = 'center';
+  // Footer'ın varsayılan hizalamasını ezip tam genişlikte 2 katlı bir yapı kuruyoruz
+  document.getElementById('modal-footer').style.display = 'block'; 
   
-  // 1. Herkes için ortak fiş butonu (Yazının bölünmesini engellemek için nowrap ekledik)
-  let footerHtml = `<button class="btn btn-outline btn-sm" onclick="printKargoFisi('${k.id}')" style="margin-right:auto; white-space:nowrap; flex-shrink:0;">🖨️ Fiş Yazdır</button>`;
+  let footerHtml = `<div style="display: flex; flex-direction: column; gap: 16px; width: 100%;">`;
   
-  // 2. Eğer ADMIN ise tüm yetkileri ver (Seçenekleri bir kapsayıcı içine alıyoruz)
+  // 1. KAT: ADMIN HIZLI İŞLEM ÇUBUĞU (Şık Gri Kutu)
   if (isAdmin) {
     footerHtml += `
-      <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; align-items:center;">
-        <select id="durum-select" style="padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);outline:none;">
-          <option value="beklemede" ${k.durum==='beklemede'?'selected':''}>Beklemede</option>
-          <option value="yolda" ${k.durum==='yolda'?'selected':''}>Yolda</option>
-          <option value="teslim" ${k.durum==='teslim'?'selected':''}>Teslim Edildi</option>
-          <option value="iptal" ${k.durum==='iptal'?'selected':''}>İptal</option>
-        </select>
-        <select id="odeme-select" style="padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);outline:none;">
-          <option value="bekliyor" ${k.odeme_durumu==='bekliyor'?'selected':''}>Ödeme Bekliyor</option>
-          <option value="odendi" ${k.odeme_durumu==='odendi'?'selected':''}>Ödendi</option>
-        </select>
-        <button class="btn btn-primary btn-sm" onclick="updateKargoDurum('${k.id}')" style="white-space:nowrap;">Güncelle</button>
-        <button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')" style="white-space:nowrap;">Düzenle</button>
-        <button class="btn btn-danger-outline btn-sm" onclick="deleteKargo('${k.id}')" style="white-space:nowrap;">Sil</button>
+      <div style="background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;">
+        <div style="font-size: 11px; font-weight: 700; color: var(--text2); letter-spacing: 0.5px;">DURUM GÜNCELLE</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+          <select id="durum-select" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);outline:none;cursor:pointer;">
+            <option value="beklemede" ${k.durum==='beklemede'?'selected':''}>Beklemede</option>
+            <option value="yolda" ${k.durum==='yolda'?'selected':''}>Yolda</option>
+            <option value="teslim" ${k.durum==='teslim'?'selected':''}>Teslim Edildi</option>
+            <option value="iptal" ${k.durum==='iptal'?'selected':''}>İptal</option>
+          </select>
+          <select id="odeme-select" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);outline:none;cursor:pointer;">
+            <option value="bekliyor" ${k.odeme_durumu==='bekliyor'?'selected':''}>Ödeme Bekliyor</option>
+            <option value="odendi" ${k.odeme_durumu==='odendi'?'selected':''}>Ödendi</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="updateKargoDurum('${k.id}')" style="padding:6px 14px;">Güncelle</button>
+        </div>
       </div>`;
   } 
-  // 3. Eğer MÜŞTERİ (Kargo Sahibi) ise
-  else if (isOwner) {
+  
+  // 2. KAT: STANDART BUTONLAR (Fiş solda, Düzenle/Sil sağda)
+  footerHtml += `<div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">`;
+  
+  // Sol Köşe
+  footerHtml += `<button class="btn btn-outline btn-sm" onclick="printKargoFisi('${k.id}')">🖨️ Fiş Yazdır</button>`;
+  
+  // Sağ Köşe
+  if (isAdmin) {
+    footerHtml += `
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')">Düzenle</button>
+        <button class="btn btn-danger-outline btn-sm" onclick="deleteKargo('${k.id}')">Sil</button>
+      </div>`;
+  } else if (isOwner) {
     if (k.durum === 'beklemede') {
       footerHtml += `
-        <div style="display:flex; gap:8px;">
-          <button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')" style="white-space:nowrap;">Düzenle</button>
-          <button class="btn btn-danger-outline btn-sm" onclick="deleteKargo('${k.id}')" style="white-space:nowrap;">Sil</button>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')">Düzenle</button>
+          <button class="btn btn-danger-outline btn-sm" onclick="deleteKargo('${k.id}')">Sil</button>
         </div>`;
     } else {
       footerHtml += `<span style="font-size:11px;color:var(--text3);font-style:italic;">İşlem görmüş kargolar düzenlenemez.</span>`;
     }
+  } else {
+    footerHtml += `<div></div>`; // Düzeni korumak için boşluk tutucu
   }
   
-  // Alt kısmı ekrana bas ve modalı aç
+  footerHtml += `</div></div>`; // Kapsayıcıları kapatıyoruz
+  
+  // Ekrana bas ve modalı aç
   document.getElementById('modal-footer').innerHTML = footerHtml;
   document.getElementById('kargo-modal').style.display = 'flex';
 }
