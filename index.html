@@ -1048,46 +1048,59 @@ function genTrackingNo() {
 
 // ─── CREATE KARGO ───
 async function createKargo() {
-  const data = {
-    tracking_no: genTrackingNo(),
-    user_id: currentUser.id,
-    
-    // GÖNDERİCİ BİLGİLERİNİ OTOMATİK PROFİLDEN ALIYORUZ
-    g_adsoyad: `${currentProfile.first_name} ${currentProfile.last_name}`,
-    g_tel: currentProfile.phone || '-',
-    g_il: '-', 
-    g_adres: 'Sistemde Kayıtlı Adres',
-    
-    // ALICI BİLGİLERİ (Formdan gelmeye devam ediyor)
-    a_adsoyad: document.getElementById('a-adsoyad').value.trim(),
-    a_tel: document.getElementById('a-tel').value.trim(),
-    a_il: document.getElementById('a-il').value.trim(),
-    a_adres: document.getElementById('a-adres').value.trim(),
-    odeme_tipi: document.getElementById('odeme-tipi').value,
-    ucret: parseFloat(document.getElementById('ucret').value) || 0,
-    aciklama: document.getElementById('aciklama').value.trim(),
-    durum: 'beklemede',
-    odeme_durumu: 'bekliyor',
-  };
+  try {
+    // 1. Profil bilgisi gelmediyse bile kodun çökmesini engelleyen güvenlik önlemi
+    const isim = currentProfile ? `${currentProfile.first_name} ${currentProfile.last_name}` : 'Sistem Kullanıcısı';
+    const tel = currentProfile ? currentProfile.phone : '-';
 
-  const { data: newKargo, error } = await sb.from('kargolar').insert(data).select().single();
+    const data = {
+      tracking_no: genTrackingNo(),
+      user_id: currentUser.id,
+      g_adsoyad: isim,
+      g_tel: tel || '-',
+      g_il: '-', 
+      g_adres: 'Sistemde Kayıtlı Adres',
+      
+      a_adsoyad: document.getElementById('a-adsoyad').value.trim(),
+      a_tel: document.getElementById('a-tel').value.trim(),
+      a_il: document.getElementById('a-il').value.trim(),
+      a_adres: document.getElementById('a-adres').value.trim(),
+      odeme_tipi: document.getElementById('odeme-tipi').value,
+      ucret: parseFloat(document.getElementById('ucret').value) || 0,
+      aciklama: document.getElementById('aciklama').value.trim(),
+      durum: 'beklemede',
+      odeme_durumu: 'bekliyor',
+    };
 
-  if (error) {
-    toast('Kargo oluşturulurken hata çıktı: ' + error.message, 'error');
-    return;
+    // 2. Veritabanına kaydet
+    const { data: newKargo, error } = await sb.from('kargolar').insert(data).select().single();
+
+    // Veritabanı (Supabase) tarafında bir ret yediyseniz bunu ekranda göster
+    if (error) {
+      alert('Veritabanı Hatası: ' + error.message);
+      return;
+    }
+
+    // 3. Geçmişe not düş
+    await sb.from('kargo_gecmis').insert({ kargo_id: newKargo.id, durum: 'beklemede', not: 'Kargo sisteme girildi' });
+
+    // 4. Formu temizle
+    document.getElementById('a-adsoyad').value = '';
+    document.getElementById('a-tel').value = '';
+    document.getElementById('a-il').value = '';
+    document.getElementById('a-adres').value = '';
+    document.getElementById('ucret').value = '';
+    document.getElementById('aciklama').value = '';
+
+    // 5. Başarı mesajı ve yönlendirme
+    toast('Kargo başarıyla oluşturuldu!', 'success');
+    showPage('page-kargolarim');
+    
+  } catch (err) {
+    // KONSOL GİZLİ OLSA BİLE kodda bir hata çıkarsa ekrana zorla uyarı fırlat!
+    alert('Kod Hatası: ' + err.message);
+    console.error(err);
   }
-
-  await sb.from('kargo_gecmis').insert({ kargo_id: newKargo.id, durum: 'beklemede', not: 'Kargo sisteme girildi' });
-
-  document.getElementById('a-adsoyad').value = '';
-  document.getElementById('a-tel').value = '';
-  document.getElementById('a-il').value = '';
-  document.getElementById('a-adres').value = '';
-  document.getElementById('ucret').value = '';
-  document.getElementById('aciklama').value = '';
-
-  toast('Kargo başarıyla oluşturuldu!', 'success');
-  showPage('page-kargolarim');
 }
 
 // ─── MUSTERI DASHBOARD ───
