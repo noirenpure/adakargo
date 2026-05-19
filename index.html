@@ -858,10 +858,7 @@ CREATE POLICY "Kargo geçmişi gör" ON kargo_gecmis FOR SELECT
 
 CREATE POLICY "Geçmiş ekle" ON kargo_gecmis FOR INSERT
   WITH CHECK (EXISTS (SELECT 1 FROM kargolar WHERE id = kargo_id));
-
--- 5. Admin kullanıcısı için: Supabase Auth'da bir kullanıcı oluşturun,
---    sonra bu SQL ile admin yapın (user ID'nizi yazın):
--- UPDATE profiles SET role = 'admin' WHERE id = 'BURAYA-USER-ID';`;
+`;
 
 // ─── STATE ───
 let sb = null;
@@ -871,26 +868,13 @@ let allKargolar = [];
 let editingKargoId = null;
 
 // ─── INIT ───
-// SUPABASE BİLGİLERİNİZİ BURAYA YAPIŞTIRIN
 const SUPABASE_URL = "https://fbpicxycgvcujwlghdgb.supabase.co"; 
 const SUPABASE_KEY = "sb_publishable_hFvPGqqetLI2ze6_daErXw_c4FX4JI2";
 
 document.getElementById('sql-content').value = SQL_SCHEMA;
 
-// Sistemi otomatik başlat
 initSupabase(SUPABASE_URL, SUPABASE_KEY);
 checkAuth();
-
-function saveConfig() {
-  const url = document.getElementById('cfg-url').value.trim();
-  const key = document.getElementById('cfg-key').value.trim();
-  if (!url || !key) return toast('URL ve Key gerekli', 'error');
-  localStorage.setItem('sb_url', url);
-  localStorage.setItem('sb_key', key);
-  initSupabase(url, key);
-  document.getElementById('config-modal').style.display = 'none';
-  checkAuth();
-}
 
 function showSqlModal() { document.getElementById('sql-modal').style.display = 'flex'; }
 function copySql() {
@@ -964,14 +948,11 @@ function showAuthError(msg) {
 
 async function logout() {
   try {
-    // Supabase'e çıkış isteği gönder
     await sb.auth.signOut();
   } catch (error) {
     console.log("Çıkış yapılırken ufak bir pürüz çıktı ama hallediliyor:", error);
   }
-  // Tarayıcı hafızasını zorla temizle (Kesin çıkış garantisi)
   localStorage.clear();
-  // Sayfayı sıfırdan başlat
   location.reload();
 }
 
@@ -1062,7 +1043,7 @@ async function createKargo() {
     // GÖNDERİCİ BİLGİLERİNİ OTOMATİK PROFİLDEN ALIYORUZ
     g_adsoyad: `${currentProfile.first_name} ${currentProfile.last_name}`,
     g_tel: currentProfile.phone || '-',
-    g_il: '-', // Profillerde il/adres tutmadığımız için şimdilik tire koyuyoruz
+    g_il: '-', 
     g_adres: 'Sistemde Kayıtlı Adres',
     
     // ALICI BİLGİLERİ (Formdan gelmeye devam ediyor)
@@ -1077,7 +1058,6 @@ async function createKargo() {
     odeme_durumu: 'bekliyor',
   };
 
-  // VERİTABANINA KAYDETME İŞLEMİ (Burası silinmişti!)
   const { data: newKargo, error } = await sb.from('kargolar').insert(data).select().single();
 
   if (error) {
@@ -1085,10 +1065,8 @@ async function createKargo() {
     return;
   }
 
-  // Geçmiş tablosuna "Kargo sisteme girildi" notunu düş
   await sb.from('kargo_gecmis').insert({ kargo_id: newKargo.id, durum: 'beklemede', not: 'Kargo sisteme girildi' });
 
-  // İşlem bitince kutuları temizle ve başarı mesajı ver
   document.getElementById('a-adsoyad').value = '';
   document.getElementById('a-tel').value = '';
   document.getElementById('a-il').value = '';
@@ -1243,7 +1221,6 @@ async function loadRaporlar() {
     { label: 'Bekleyen Tahsilat', value: '₺' + bekGelir.toLocaleString('tr-TR',{minimumFractionDigits:2}) },
   ].map(s => `<div class="stat-card"><div class="stat-label">${s.label}</div><div class="stat-value" style="font-size:20px">${s.value}</div></div>`).join('');
 
-  // Monthly grouping
   const byMonth = {};
   all.forEach(k => {
     const m = k.created_at.slice(0,7);
@@ -1314,11 +1291,8 @@ async function showKargoDetail(id) {
     </div>`;
 
   const isAdmin = currentProfile?.role === 'admin';
-  
-  // 1. Herkes için (Müşteri ve Admin) fiş yazdırma butonunu varsayılan olarak ekliyoruz
   let footerHtml = `<button class="btn btn-outline btn-sm" onclick="printKargoFisi('${k.id}')" style="margin-right:auto;">🖨️ Fiş Yazdır</button>`;
   
-  // 2. Eğer sisteme giren kişi admin ise, fiş butonunun yanına yönetim araçlarını da ekle
   if (isAdmin) {
     footerHtml += `
       <select id="durum-select" style="padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);outline:none;">
@@ -1335,7 +1309,6 @@ async function showKargoDetail(id) {
       <button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')">Düzenle</button>`;
   }
   
-  // Alt kısmı ekrana bas ve modalı aç
   document.getElementById('modal-footer').innerHTML = footerHtml;
   document.getElementById('kargo-modal').style.display = 'flex';
 }
@@ -1488,7 +1461,6 @@ function toast(msg, type='') {
   setTimeout(()=> el.className = '', 3000);
 }
 
-// Close modals on overlay click
 ['kargo-modal','edit-modal','sql-modal'].forEach(id => {
   document.getElementById(id)?.addEventListener('click', e => {
     if (e.target.id === id) closeModal(id);
@@ -1498,11 +1470,8 @@ function toast(msg, type='') {
 // ─── KARGO FİŞİ YAZDIRMA ───
 async function printKargoFisi(id) {
   const { data: k } = await sb.from('kargolar').select('*').eq('id', id).single();
-  
-  // Yeni bir yazdırma penceresi açıyoruz
   const printWindow = window.open('', '_blank', 'width=800,height=600');
   
-  // Fişin HTML ve CSS tasarımı
   printWindow.document.write(`
     <html>
       <head>
@@ -1518,48 +1487,23 @@ async function printKargoFisi(id) {
           .info { font-size: 14px; margin-bottom: 4px; }
           .footer { border-top: 2px solid #000; padding-top: 10px; display: flex; justify-content: space-between; font-weight: bold; font-size: 13px; }
           .date { text-align: center; font-size: 10px; margin-top: 15px; color: #666; }
-          @media print {
-            body { -webkit-print-color-adjust: exact; }
-          }
+          @media print { body { -webkit-print-color-adjust: exact; } }
         </style>
       </head>
       <body>
         <div class="label-box">
-          <div class="header">
-            <h2>KargoNet</h2>
-            <div class="barcode-text">*${k.tracking_no}*</div>
-          </div>
-          
-          <div class="section">
-            <div class="section-title">Gönderici</div>
-            <div class="info"><strong>${k.g_adsoyad}</strong></div>
-            <div class="info">Tel: ${k.g_tel}</div>
-          </div>
-
-          <div class="section">
-            <div class="section-title">Alıcı</div>
-            <div class="info"><strong>${k.a_adsoyad}</strong></div>
-            <div class="info">Tel: ${k.a_tel || '-'}</div>
-            <div class="info">${k.a_il || ''} - ${k.a_adres || ''}</div>
-          </div>
-
-          <div class="footer">
-            <div>${k.odeme_tipi === 'gonderici' ? 'Gönderici Öder' : 'Alıcı Öder'}</div>
-            <div>Tutar: ₺${parseFloat(k.ucret || 0).toFixed(2)}</div>
-          </div>
-          
+          <div class="header"><h2>KargoNet</h2><div class="barcode-text">*${k.tracking_no}*</div></div>
+          <div class="section"><div class="section-title">Gönderici</div><div class="info"><strong>${k.g_adsoyad}</strong></div><div class="info">Tel: ${k.g_tel}</div></div>
+          <div class="section"><div class="section-title">Alıcı</div><div class="info"><strong>${k.a_adsoyad}</strong></div><div class="info">Tel: ${k.a_tel || '-'}</div><div class="info">${k.a_il || ''} - ${k.a_adres || ''}</div></div>
+          <div class="footer"><div>${k.odeme_tipi === 'gonderici' ? 'Gönderici Öder' : 'Alıcı Öder'}</div><div>Tutar: ₺${parseFloat(k.ucret || 0).toFixed(2)}</div></div>
           <div class="date">İşlem Tarihi: ${new Date(k.created_at).toLocaleString('tr-TR')}</div>
         </div>
-        <script>
-          // Yüklenince otomatik yazdır ve pencereyi kapat
-          window.onload = function() { window.print(); window.close(); }
-        </script>
+        <script>window.onload = function() { window.print(); window.close(); }<\/script>
       </body>
     </html>
   `);
   printWindow.document.close();
 }
-
 </script>
 </body>
 </html>
