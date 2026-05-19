@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <title>EFE KARGO — Lojistik Otomasyon Sistemi</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script> src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -398,9 +398,11 @@ function updateUserInfo() {
   const name = `${currentProfile?.first_name || ''} ${currentProfile?.last_name || ''}`.trim() || currentUser?.email, role = currentProfile?.role === 'admin' ? 'Admin' : 'Müşteri', initials = name.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2);
   document.getElementById('user-display-name').textContent = name; document.getElementById('user-display-role').textContent = role; document.getElementById('user-avatar-text').textContent = initials;
   document.getElementById('welcome-name').textContent = `Merhaba, ${currentProfile?.first_name || 'Kullanıcı'} 👋`;
+  
+  // Ana sayfa ve logoları EFE KARGO yapalım
+  document.querySelectorAll('.auth-logo span').forEach(el => el.innerHTML = '<strong>EFE</strong>KARGO');
 }
 
-// ─── DÖNEM MOTORU (OTOMATİK AYLIK PARTİ OLUŞTURUCU) ───
 function initMonthFilters() {
   const months = []; const d = new Date();
   for (let i = 0; i < 12; i++) {
@@ -442,7 +444,6 @@ async function loadMusteriDashboard() {
   const son5 = all.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5); document.getElementById('musteri-son-kargolar').innerHTML = son5.length ? kargoTable(son5, false) : emptyState('Henüz kargo yok');
 }
 
-// ─── MUSTERI FILTRE GRUBU (AYLIK PARTI DESTEKLI) ───
 let musteriKargolarAll = [], musteriKargolarFiltered = [], musteriSearchQ = '', musteriStatusQ = '', musteriMonthQ = '';
 async function loadKargolarim() {
   document.getElementById('kargolarim-table').innerHTML = '<div class="loading"><div class="spinner"></div> Yükleniyor...</div>';
@@ -454,7 +455,7 @@ function filterMusteriKargolarDurum(durum) { musteriStatusQ = durum; applyMuster
 function filterMusteriKargolarAy(ay) { musteriMonthQ = ay; applyMusteriFilters(); }
 function applyMusteriFilters() {
   musteriKargolarFiltered = musteriKargolarAll.filter(k => {
-    const mSearch = k.tracking_no.toLowerCase().includes(mSearchQ) || k.a_adsoyad.toLowerCase().includes(mSearchQ);
+    const mSearch = k.tracking_no.toLowerCase().includes(musteriSearchQ) || k.a_adsoyad.toLowerCase().includes(musteriSearchQ);
     const mStatus = musteriStatusQ ? k.durum === musteriStatusQ : true;
     const mMonth = musteriMonthQ ? k.created_at.startsWith(musteriMonthQ) : true;
     return mSearch && mStatus && mMonth;
@@ -490,7 +491,6 @@ async function loadMusteriler() {
   document.getElementById('musteriler-table').innerHTML = `<table><thead><tr><th>Müşteri</th><th>Telefon</th><th>Kayıt Tarihi</th><th>İşlem</th></tr></thead><tbody>${musteriler.map(m => `<tr><td data-label="Müşteri"><div class="customer-chip"><div class="customer-avatar-sm">${(m.first_name[0]||'')+(m.last_name[0]||'')}</div><span>${m.first_name} ${m.last_name}</span></div></td><td data-label="Telefon" style="color:var(--text2)">${m.phone||'—'}</td><td data-label="Kayıt Tarihi" style="color:var(--text2)">${fmtDate(m.created_at)}</td><td data-label="İşlem"><button class="action-btn" onclick="showMusteriKargolar('${m.id}','${m.first_name} ${m.last_name}')">Cari & Kargolar</button></td></tr>`).join('')}</tbody></table>`;
 }
 
-// ─── HARİKA MÜŞTERİ CARİ HESAP EKSTRESİ OLUŞTURUCU ───
 async function showMusteriKargolar(userId, name) {
   const { data } = await sb.from('kargolar').select('*').eq('user_id', userId).order('created_at', { ascending: false }); const userKargolar = data || [];
   document.getElementById('modal-title').textContent = `${name} — Cari Hesap Ekstresi`;
@@ -566,8 +566,39 @@ async function saveEdit() {
   await sb.from('kargolar').update(updates).eq('id', editingKargoId); toast('Kargo güncellendi', 'success'); closeModal('edit-modal'); const activePage = document.querySelector('.page.active')?.id; if (activePage === 'page-tumkargolar') loadAdminKargolar(); else if (activePage === 'page-kargolarim') loadKargolarim();
 }
 
-function kargoTable(data, isAdmin) {
-  return `<table><thead><tr><th>Takip No</th>${isAdmin ? '<th>Müşteri</th>' : ''}<th>Gönderici</th><th>Alıcı</th><th>Durum</th><th>Ödeme</th><th>Tarih</th><th></th></tr></thead><tbody>${data.map(k=>`<tr><td data-label="Takip No"><span class="tracking-no">${k.tracking_no}</span></td>${isAdmin ? `<td data-label="Müşteri Hesap" style="font-size:12px;color:var(--text2)">${k.profiles ? k.profiles.first_name+' '+k.profiles.last_name : '—'}</td>` : ''}<td data-label="Gönderici">${k.g_adsoyad}<br><span style="font-size:11px;color:var(--text3)">${k.g_il||''}</span></td><td data-label="Alıcı">${k.a_adsoyad}<br><span style="font-size:11px;color:var(--text3)">${k.a_il||''}</span></td><td data-label="Kargo Durumu">${badgeHtml(k.durum)}</td><td data-label="Ödeme Tutarı">${badgeOdeme(k.odeme_durumu)}<br><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)">₺${parseFloat(k.ucret||0).toFixed(2)}</span></td><td data-label="İşlem Tarihi" style="font-size:12px;color:var(--text3)">${fmtDate(k.created_at)}</td><td data-label="İşlem"><button class="action-btn" onclick="showKargoDetail('${k.id}')">Detay</button></td></tr>`).join('')}</tbody></table>`;
-}
+function kargoTable(data, isAdmin) { return `<table><thead><tr><th>Takip No</th>${isAdmin ? '<th>Müşteri</th>' : ''}<th>Gönderici</th><th>Alıcı</th><th>Durum</th><th>Ödeme</th><th>Tarih</th><th></th></tr></thead><tbody>${data.map(k=>`<tr><td data-label="Takip No"><span class="tracking-no">${k.tracking_no}</span></td>${isAdmin ? `<td data-label="Müşteri Hesap" style="font-size:12px;color:var(--text2)">${k.profiles ? k.profiles.first_name+' '+k.profiles.last_name : '—'}</td>` : ''}<td data-label="Gönderici">${k.g_adsoyad}<br><span style="font-size:11px;color:var(--text3)">${k.g_il||''}</span></td><td data-label="Alıcı">${k.a_adsoyad}<br><span style="font-size:11px;color:var(--text3)">${k.a_il||''}</span></td><td data-label="Kargo Durumu">${badgeHtml(k.durum)}</td><td data-label="Ödeme Tutarı">${badgeOdeme(k.odeme_durumu)}<br><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)">₺${parseFloat(k.ucret||0).toFixed(2)}</span></td><td data-label="İşlem Tarihi" style="font-size:12px;color:var(--text3)">${fmtDate(k.created_at)}</td><td data-label="İşlem"><button class="action-btn" onclick="showKargoDetail('${k.id}')">Detay</button></td></tr>`).join('')}</tbody></table>`; }
 function kargoTableSmall(data) { return `<table><thead><tr><th>Takip No</th><th>Alıcı</th><th>Durum</th></tr></thead><tbody>${data.map(k=>`<tr><td data-label="Takip No"><span class="tracking-no" style="font-size:11px">${k.tracking_no}</span></td><td data-label="Alıcı" style="font-size:12px">${k.a_adsoyad}</td><td data-label="Durum">${badgeHtml(k.durum)}</td></tr>`).join('')}</tbody></table>`; }
-...
+function odemelerTableSmall(data) { return `<table><thead><tr><th>Takip No</th><th>Alıcı</th><th>Tutar</th></tr></thead><tbody>${data.map(k=>`<tr><td data-label="Takip No"><span class="tracking-no" style="font-size:11px">${k.tracking_no}</span></td><td data-label="Alıcı" style="font-size:12px">${k.a_adsoyad}</td><td data-label="Tutar" style="font-family:'DM Mono',monospace;font-size:12px">₺${parseFloat(k.ucret||0).toFixed(2)}</td></tr>`).join('')}</tbody></table>`; }
+function badgeHtml(durum) { const labels = { beklemede:'Beklemede', teslim:'Teslim Edildi', iptal:'İptal' }; return `<span class="badge badge-${durum}">${labels[durum]||durum}</span>`; }
+function badgeOdeme(d) { return `<span class="badge badge-${d==='odendi'?'odendi':'bekliyor'}">${d==='odendi'?'Ödendi':'Bekliyor'}</span>`; }
+function durumLabel(d) { return { beklemede:'Beklemede', teslim:'Teslim Edildi', iptal:'İptal' }[d] || d; }
+function emptyState(msg) { return `<div class="empty-state"><div class="empty-icon">📦</div><p>${msg}</p></div>`; }
+function fmtDate(d) { return new Date(d).toLocaleDateString('tr-TR', { day:'2-digit', month:'2-digit', year:'numeric' }); }
+function fmtDateFull(d) { return new Date(d).toLocaleString('tr-TR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }); }
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+function svgHome() { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`; }
+function svgBox() { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`; }
+function svgPlus() { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`; }
+function svgUsers() { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>`; }
+function svgChart() { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`; }
+
+function toast(msg, type='') { const el = document.getElementById('toast'); el.textContent = msg; el.className = 'show' + (type ? ' '+type : ''); setTimeout(()=> el.className = '', 3000); }
+['kargo-modal','edit-modal','sql-modal'].forEach(id => { document.getElementById(id)?.addEventListener('click', e => { if (e.target.id === id) closeModal(id); }); });
+
+async function deleteKargo(id) {
+  const onay = confirm('Bu kargoyu silmek istediğinize emin misiniz?'); if (!onay) return;
+  const { error } = await sb.from('kargolar').delete().eq('id', id);
+  if (error) { alert('Hata: ' + error.message); return; }
+  toast('Kargo silindi!', 'success'); closeModal('kargo-modal');
+  const activePage = document.querySelector('.page.active')?.id;
+  if (activePage === 'page-kargolarim') loadKargolarim(); else if (activePage === 'page-tumkargolar') loadAdminKargolar(); else if (activePage === 'page-musteridashboard') loadMusteriDashboard();
+}
+
+async function printKargoFisi(id) {
+  const { data: k } = await sb.from('kargolar').select('*').eq('id', id).single();
+  const printWindow = window.open('', '_blank', 'width=560,height=794');
+  printWindow.document.write(`<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><title>Kargo Fişi - ${k.tracking_no}</title><style>@page{size:A4 portrait;margin:12mm;}*,*::before,*::after{box-sizing:border-box;}body{font-family:'Helvetica Neue','Helvetica','Arial',sans-serif;color:#111;margin:0;padding:0;font-size:10pt;line-height:1.4;}.header-table{width:100%;border-collapse:collapse;margin-bottom:5px;}.logo-text{font-size:24pt;letter-spacing:-0.5px;color:#000;}.logo-text strong{font-weight:900;}.logo-text span{font-weight:300;color:#333;padding-left:2px;}.meta-container{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:20px;}.tracking-number{font-size:12pt;font-weight:bold;color:#333;}.header-meta{font-size:8.5pt;color:#444;text-align:right;}.address-table{width:100%;border-collapse:collapse;margin-bottom:20px;}.address-cell{width:50%;vertical-align:top;border:1px solid #111;padding:12px;}.address-cell.receiver{border-left:none;background-color:#fafafa;}.section-title{font-size:7.5pt;font-weight:bold;text-transform:uppercase;color:#555;border-bottom:1px solid #111;padding-bottom:4px;margin-bottom:6px;}.name-field{font-size:10.5pt;font-weight:bold;margin-bottom:4px;}.address-field{font-size:9pt;color:#222;min-height:40px;}.phone-field{font-weight:bold;margin-top:6px;font-size:9pt;}.notes-box{border:1px dashed #444;padding:10px;font-size:8.5pt;margin-bottom:30px;}.payment-wrapper{border-top:2px solid #000;padding-top:12px;margin-top:20px;}.payment-table{width:100%;border-collapse:collapse;}.payment-info-cell{vertical-align:middle;}.payment-status-title{font-size:8pt;font-weight:bold;text-transform:uppercase;color:#555;}.payment-status-value{font-size:11pt;font-weight:bold;margin-top:2px;}.payment-amount-cell{text-align:right;vertical-align:middle;}.payment-amount-title{font-size:8pt;font-weight:bold;text-transform:uppercase;color:#555;}.payment-amount-value{font-size:18pt;font-weight:900;color:#000;}.footer-notice{text-align:center;font-size:7pt;color:#777;margin-top:15px;}</style></head><body><table class="header-table"><tr><td class="logo-text"><strong>EFE</strong><span>KARGO</span></td></tr></table><div class="meta-container"><div class="tracking-number">Takip No: ${k.tracking_no}</div><div class="header-meta">Tarih: ${new Date(k.created_at).toLocaleDateString('tr-TR')}<br>Otomasyon Fişi</div></div><table class="address-table"><tr><td class="address-cell"><div class="section-title">Gönderici</div><div class="name-field">${k.g_adsoyad}</div><div class="address-field">${k.g_adres||'Sistemde Kayıtlı Adres'}<br>${k.g_il||''}</div><div class="phone-field">Tel: ${k.g_tel}</div></td><td class="address-cell receiver"><div class="section-title">Alıcı</div><div class="name-field">${k.a_adsoyad}</div><div class="address-field">${k.a_adres||''}<br><strong>${k.a_il||''}</strong></div><div class="phone-field">Tel: ${k.a_tel||'-'}</div></td></tr></table><div class="notes-box"><strong>Kargo Açıklaması / İçerik:</strong> ${k.aciklama||'Belirtilmedi'}</div><div class="payment-wrapper"><table class="payment-table"><tr><td class="payment-info-cell"><div class="payment-status-title">Ödeme Türü / Durumu</div><div class="payment-status-value">${k.odeme_tipi==='evet'?'KAPIDA ÖDEME (TAHSİLATLI)':'ÖDEME YOK (DİREKT TESLİM)'}</div></td><td class="payment-amount-cell">${k.odeme_tipi==='evet'?`<div class="payment-amount-title">Tahsil Edilecek Tutar</div><div class="payment-amount-value">${parseFloat(k.ucret||0).toLocaleString('tr-TR',{minimumFractionDigits:2})} ₺</div>`:''}</td></tr></table><div class="footer-notice">Efe Kargo Lojistik Otomasyon Sistemi</div></div><script>window.onload=function(){window.print();window.close();}<\/script></body></html>`);
+  printWindow.document.close();
+}
+</script>
