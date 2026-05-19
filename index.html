@@ -1077,6 +1077,29 @@ async function createKargo() {
     odeme_durumu: 'bekliyor',
   };
 
+  // VERİTABANINA KAYDETME İŞLEMİ (Burası silinmişti!)
+  const { data: newKargo, error } = await sb.from('kargolar').insert(data).select().single();
+
+  if (error) {
+    toast('Kargo oluşturulurken hata çıktı: ' + error.message, 'error');
+    return;
+  }
+
+  // Geçmiş tablosuna "Kargo sisteme girildi" notunu düş
+  await sb.from('kargo_gecmis').insert({ kargo_id: newKargo.id, durum: 'beklemede', not: 'Kargo sisteme girildi' });
+
+  // İşlem bitince kutuları temizle ve başarı mesajı ver
+  document.getElementById('a-adsoyad').value = '';
+  document.getElementById('a-tel').value = '';
+  document.getElementById('a-il').value = '';
+  document.getElementById('a-adres').value = '';
+  document.getElementById('ucret').value = '';
+  document.getElementById('aciklama').value = '';
+
+  toast('Kargo başarıyla oluşturuldu!', 'success');
+  showPage('page-kargolarim');
+}
+
 // ─── MUSTERI DASHBOARD ───
 async function loadMusteriDashboard() {
   const { data } = await sb.from('kargolar').select('*').eq('user_id', currentUser.id);
