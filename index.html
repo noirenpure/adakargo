@@ -578,6 +578,35 @@ tr:hover td { background: var(--bg); }
   #modal-footer > div { flex-direction: column !important; width: 100%; gap: 10px !important; }
   #modal-footer button, #modal-footer select { width: 100% !important; height: 44px; font-size: 14px; font-weight: 600; }
 }
+/* ════════════════════════════════════════════════════════════ */
+/* 🛠️ MOBİL HATA GİDERİCİ (ZOOM, TIKLAMA VE SELECT KUTULARI)    */
+/* ════════════════════════════════════════════════════════════ */
+
+/* 1. iOS Yakınlaştırma (Zoom) Sorununu Kökünden Çöz */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important; /* 16px altı iOS'ta zorla zoom yaptırır, bunu 16px yaparak engelledik */
+  }
+}
+
+/* 2. Arama Kutusundaki Büyüteç İkonunun Tıklamayı Engellemesini Çöz */
+.search-bar svg {
+  pointer-events: none !important; /* İkonu tıklamalara karşı "hayalet" yapar, alttaki kutuya direkt tıklanır */
+}
+
+/* 3. Seçim (Select) Kutularını %100 Tıklanabilir Yap ve Ok İşaretini Zorla Değiştir */
+select {
+  -webkit-appearance: none !important; /* Tarayıcının orijinal okunu ZORLA siler */
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A3A2A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-size: 16px !important;
+  padding-right: 36px !important;
+  cursor: pointer !important;
+  width: 100%;
+}
 </style>
 </head>
 <body>
