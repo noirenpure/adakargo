@@ -676,29 +676,85 @@ function toggleUcret(inputId, deger) {
   if (deger === 'evet') { kapsayici.style.display = 'block'; } else { kapsayici.style.display = 'none'; input.value = ''; }
 }
 
-// ─── CREATE KARGO ───
+// ─── CREATE KARGO (KURŞUN GEÇİRMEZ VERSİYON) ───
 async function createKargo() {
+  const btn = document.querySelector('#page-yenikargo .btn-primary');
   try {
-    const isim = currentProfile ? `${currentProfile.first_name} ${currentProfile.last_name}` : 'Sistem Kullanıcısı';
+    if(btn) {
+      btn.disabled = true;
+      btn.textContent = 'Kargo Oluşturuluyor... Lütfen Bekleyin';
+    }
+
+    // 1. Bilgileri topla
+    const isim = currentProfile ? `${currentProfile.first_name} ${currentProfile.last_name}`.trim() : 'Müşteri';
     const tel = currentProfile ? currentProfile.phone : '-';
-    const btn = document.querySelector('#page-yenikargo .btn-primary');
-    btn.disabled = true; btn.textContent = 'Kargo Oluşturuluyor...';
-    const yeniTakipNo = await getNextTrackingNo();
+
+    // 2. Sıradaki takip numarasını al
+    let yeniTakipNo = await getNextTrackingNo();
+
     const data = {
-      tracking_no: yeniTakipNo, user_id: currentUser.id, g_adsoyad: isim, g_tel: tel || '-', g_il: '-', g_adres: 'Sistemde Kayıtlı Adres',
-      a_adsoyad: document.getElementById('a-adsoyad').value.trim(), a_tel: document.getElementById('a-tel').value.trim(), a_il: document.getElementById('a-il').value.trim(), a_adres: document.getElementById('a-adres').value.trim(),
-      odeme_tipi: document.getElementById('odeme-tipi').value,
-      ucret: document.getElementById('odeme-tipi').value === 'evet' ? parseFloat(document.getElementById('ucret').value) || 0 : 0,
-      aciklama: document.getElementById('aciklama').value.trim(), durum: 'beklemede', odeme_durumu: 'bekliyor',
+      tracking_no: yeniTakipNo,
+      user_id: currentUser.id,
+      g_adsoyad: isim || 'Sistem',
+      g_tel: tel || '-',
+      g_il: '-',
+      g_adres: 'Sistemde Kayıtlı Adres',
+      a_adsoyad: document.getElementById('a-adsoyad').value.trim() || 'Belirtilmedi',
+      a_tel: document.getElementById('a-tel').value.trim() || '-',
+      a_il: document.getElementById('a-il').value.trim() || '-',
+      a_adres: document.getElementById('a-adres').value.trim() || '-',
+      odeme_tipi: document.getElementById('odeme-tipi').value || 'hayir',
+      ucret: document.getElementById('odeme-tipi').value === 'evet' ? (parseFloat(document.getElementById('ucret').value) || 0) : 0,
+      aciklama: document.getElementById('aciklama').value.trim(),
+      durum: 'beklemede',
+      odeme_durumu: 'bekliyor',
     };
-    const { data: newKargo, error } = await sb.from('kargolar').insert(data).select().single();
-    if (error) { alert('Veritabanı Hatası: ' + error.message); btn.disabled = false; btn.textContent = 'Kargo Oluştur'; return; }
-    await sb.from('kargo_gecmis').insert({ kargo_id: newKargo.id, durum: 'beklemede', not: 'Kargo sisteme girildi' });
-    document.getElementById('a-adsoyad').value = ''; document.getElementById('a-tel').value = ''; document.getElementById('a-il').value = ''; document.getElementById('a-adres').value = ''; document.getElementById('ucret').value = ''; document.getElementById('aciklama').value = '';
+
+    // 3. Veritabanına kayıt işlemi
+    let { data: newKargo, error } = await sb.from('kargolar').insert(data).select().single();
+
+    // 4. ÇAKIŞMA KONTROLÜ: Eğer EFE kodu başka birinde varsa (Hata Kodu: 23505)
+    if (error && error.code === '23505') {
+        console.warn("Kod çakışması yaşandı, alternatif kod üretiliyor...");
+        // Çakışmayı önlemek için sonuna rastgele 3 haneli güvenlik kodu ekle
+        data.tracking_no = yeniTakipNo + '-' + Math.floor(100 + Math.random() * 900);
+        const retry = await sb.from('kargolar').insert(data).select().single();
+        newKargo = retry.data;
+        error = retry.error;
+        yeniTakipNo = data.tracking_no; // Başarılı olan yeni kodu güncelle
+    }
+
+    // Başka bir veritabanı hatası varsa uyar ve butonu serbest bırak
+    if (error) {
+      alert('Kayıt Başarısız: ' + error.message);
+      if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; }
+      return;
+    }
+
+    // 5. Geçmiş Tablosuna Ekle
+    if (newKargo && newKargo.id) {
+       await sb.from('kargo_gecmis').insert({ kargo_id: newKargo.id, durum: 'beklemede', not: 'Kargo sisteme girildi' });
+    }
+
+    // 6. Formu Temizle
+    document.getElementById('a-adsoyad').value = '';
+    document.getElementById('a-tel').value = '';
+    document.getElementById('a-il').value = '';
+    document.getElementById('a-adres').value = '';
+    document.getElementById('ucret').value = '';
+    document.getElementById('aciklama').value = '';
+
+    // 7. Başarı Mesajı ve Yönlendirme
     toast('Kargo başarıyla oluşturuldu! (Takip No: ' + yeniTakipNo + ')', 'success');
     showPage('page-kargolarim');
-    btn.disabled = false; btn.textContent = 'Kargo Oluştur';
-  } catch (err) { alert('Kod Hatası: ' + err.message); const btn = document.querySelector('#page-yenikargo .btn-primary'); if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; } }
+    
+    if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; }
+
+  } catch (err) {
+    console.error("Kritik JS Hatası:", err);
+    alert('Sistemsel bir hata oluştu. Detay: ' + err.message);
+    if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; }
+  }
 }
   
 // ─── MUSTERI DASHBOARD ───
