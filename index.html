@@ -3,46 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<title>EFE KARGO ONLINE</title>
+<title>EFE KARGO — Lojistik Otomasyon Sistemi</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #F5F4F0;
-  --surface: #FFFFFF;
-  --surface2: #F0EEE8;
-  --border: #E2DFD6;
-  --border2: #C8C4BA;
-  --text: #1A1916;
-  --text2: #6B6860;
-  --text3: #9C9A94;
-  --accent: #1A3A2A;
-  --accent-light: #E8F2EC;
-  --accent-mid: #2D6B48;
-  --danger: #C0392B;
-  --danger-light: #FDECEA;
-  --warn: #B7600E;
-  --warn-light: #FEF3E6;
-  --success: #1E6B3A;
-  --success-light: #E8F5EE;
-  --info: #1A4A7A;
-  --info-light: #E8F0F8;
-  --radius: 10px;
-  --radius-lg: 14px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --bg: #F5F4F0; --surface: #FFFFFF; --surface2: #F0EEE8; --border: #E2DFD6; --border2: #C8C4BA; --text: #1A1916; --text2: #6B6860; --text3: #9C9A94; --accent: #1A3A2A; --accent-light: #E8F2EC; --accent-mid: #2D6B48; --danger: #C0392B; --danger-light: #FDECEA; --warn: #B7600E; --warn-light: #FEF3E6; --success: #1E6B3A; --success-light: #E8F5EE; --info: #1A4A7A; --info-light: #E8F0F8; --radius: 10px; --radius-lg: 14px; --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
+select { -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%231A3A2A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 12px center !important; background-size: 16px !important; padding-right: 36px !important; cursor: pointer; }
+select::-ms-expand { display: none; }
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 14px;
-  min-height: 100vh;
-}
-
-/* ── CONFIG MODAL ── */
 #config-modal { position: fixed; inset: 0; background: rgba(10,10,8,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; }
 .config-box { background: var(--surface); border-radius: var(--radius-lg); padding: 2rem; width: 480px; max-width: 95vw; }
 .config-box h2 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
@@ -53,12 +25,11 @@ body {
 .config-note { background: var(--info-light); border: 1px solid #B5D4F4; border-radius: var(--radius); padding: 10px 14px; font-size: 12px; color: var(--info); margin-bottom: 1.5rem; line-height: 1.6; }
 .config-note code { font-family: 'DM Mono', monospace; background: rgba(255,255,255,0.6); padding: 1px 4px; border-radius: 4px; }
 
-/* ── AUTH ── */
 #auth-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); }
 .auth-card { background: var(--surface); border-radius: var(--radius-lg); padding: 2.5rem; width: 420px; max-width: 95vw; box-shadow: var(--shadow); border: 1px solid var(--border); }
 .auth-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
 .auth-logo-icon { width: 38px; height: 38px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-.auth-logo-icon svg { width: 20px; height: 20px; fill: white; }
+.auth-logo-icon svg { width: 20px; height: 20px; fill: none; stroke: white; stroke-width: 2; }
 .auth-logo span { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
 .auth-logo sub { font-size: 11px; color: var(--text3); display: block; line-height: 1; }
 .auth-tabs { display: flex; gap: 4px; background: var(--surface2); padding: 4px; border-radius: var(--radius); margin-bottom: 1.5rem; }
@@ -81,12 +52,11 @@ body {
 .auth-switch { text-align: center; margin-top: 1rem; font-size: 13px; color: var(--text2); }
 .auth-switch a { color: var(--accent-mid); cursor: pointer; text-decoration: none; }
 
-/* ── APP SHELL ── */
 #app { display: none; min-height: 100vh; }
 .sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 230px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 100; }
 .sidebar-logo { padding: 1.25rem 1.25rem 1rem; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
 .logo-icon { width: 32px; height: 32px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-.logo-icon svg { width: 16px; height: 16px; fill: white; }
+.logo-icon svg { width: 16px; height: 16px; fill: none; stroke: white; stroke-width: 2; }
 .logo-text { font-size: 16px; font-weight: 600; letter-spacing: -0.3px; }
 .nav { flex: 1; padding: 0.75rem; overflow-y: auto; }
 .nav-section { font-size: 10px; font-weight: 600; color: var(--text3); letter-spacing: 0.8px; text-transform: uppercase; padding: 8px 8px 4px; margin-top: 8px; }
@@ -108,14 +78,12 @@ body {
 .page-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.4px; }
 .page-header p { color: var(--text2); font-size: 13px; margin-top: 4px; }
 
-/* ── STATS ── */
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 1.75rem; }
 .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; }
 .stat-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
 .stat-value { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
 .stat-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
 
-/* ── TABLE ── */
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
 .card-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 .card-header h3 { font-size: 14px; font-weight: 600; }
@@ -131,16 +99,13 @@ tr:last-child td { border-bottom: none; }
 tr:hover td { background: var(--bg); }
 .tracking-no { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent-mid); font-weight: 500; }
 
-/* ── BADGES ── */
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 .badge-beklemede { background: var(--warn-light); color: var(--warn); }
-.badge-yolda { background: var(--info-light); color: var(--info); }
 .badge-teslim { background: var(--success-light); color: var(--success); }
 .badge-iptal { background: var(--danger-light); color: var(--danger); }
 .badge-odendi { background: var(--success-light); color: var(--success); }
 .badge-bekliyor { background: var(--warn-light); color: var(--warn); }
 
-/* ── MODAL ── */
 .modal-overlay { position: fixed; inset: 0; background: rgba(10,10,8,0.55); display: flex; align-items: center; justify-content: center; z-index: 500; padding: 1rem; }
 .modal { background: var(--surface); border-radius: var(--radius-lg); width: 560px; max-width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
 .modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
@@ -150,14 +115,12 @@ tr:hover td { background: var(--bg); }
 .modal-body { padding: 1.5rem; }
 .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
 
-/* ── DETAIL VIEW ── */
 .detail-section { margin-bottom: 1.5rem; }
 .detail-section h4 { font-size: 12px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
 .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .detail-item label { font-size: 11px; color: var(--text3); display: block; margin-bottom: 2px; }
 .detail-item span { font-size: 13px; color: var(--text); font-weight: 500; }
 
-/* ── TIMELINE ── */
 .timeline { position: relative; padding-left: 20px; }
 .timeline::before { content: ''; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 1px; background: var(--border); }
 .timeline-item { position: relative; margin-bottom: 14px; }
@@ -167,18 +130,15 @@ tr:hover td { background: var(--bg); }
 .timeline-status { font-size: 13px; font-weight: 500; }
 .timeline-note { font-size: 12px; color: var(--text2); }
 
-/* ── EMPTY ── */
 .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text3); }
 .empty-icon { font-size: 36px; margin-bottom: 10px; }
 .empty-state p { font-size: 14px; }
 
-/* ── TOAST ── */
 #toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--text); color: white; padding: 10px 18px; border-radius: 9px; font-size: 13px; font-weight: 500; transform: translateY(100px); opacity: 0; transition: all 0.25s; z-index: 9998; }
 #toast.show { transform: translateY(0); opacity: 1; }
 #toast.success { background: var(--success); }
 #toast.error { background: var(--danger); }
 
-/* ── SELECT FILTERS ── */
 .filters { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
 .filters select { padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 12px; background: var(--surface); color: var(--text); outline: none; cursor: pointer; }
 .action-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 7px; border: 1px solid var(--border); background: none; font-size: 12px; color: var(--text2); cursor: pointer; transition: all 0.12s; }
@@ -187,68 +147,40 @@ tr:hover td { background: var(--bg); }
 .action-btn.primary:hover { background: var(--accent-mid); }
 .action-btn svg { width: 13px; height: 13px; }
 
-/* ── CUSTOMER PANEL ── */
 .welcome-banner { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); border-radius: var(--radius-lg); padding: 1.5rem; color: white; margin-bottom: 1.75rem; display: flex; justify-content: space-between; align-items: center; }
 .welcome-banner h2 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
 .welcome-banner p { font-size: 13px; opacity: 0.8; }
 
-/* ── LOADING ── */
 .loading { display: flex; align-items: center; justify-content: center; padding: 2rem; color: var(--text3); gap: 10px; }
 .spinner { width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent-mid); border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── ADMIN CUSTOMER LIST ── */
 .customer-chip { display: inline-flex; align-items: center; gap: 6px; }
 .customer-avatar-sm { width: 26px; height: 26px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: var(--accent); flex-shrink: 0; }
 
 /* ════════════════════════════════════════════════════════════ */
 /* 📱 %100 MOBİL UYGULAMA (APP) TASARIMI - KOMPAKT SÜRÜM        */
 /* ════════════════════════════════════════════════════════════ */
-
-/* Masaüstü Filtre Ayarı (Yan yana durmalarını zorunlu kılıyoruz) */
-.filters select {
-  width: auto !important;
-  min-width: 140px !important;
-}
+.filters select { width: auto !important; min-width: 130px !important; }
 .mobile-filters-container { display: none; }
 
 @media (max-width: 768px) {
-  /* 1. APP SHELL (Üst ve Alt Bar İçin Boşluklar) */
   body { font-size: 13px; }
   .main { margin-left: 0 !important; padding: 80px 1rem 85px 1rem !important; min-height: 100vh; }
   .page-header h1 { font-size: 20px; }
   
-/* 2. ÜST BAR (Sabit Logo ve ÇIKIŞ Butonu) */
-  .sidebar { width: 0; height: 0; background: transparent; border: none; box-shadow: none; z-index: 1000; pointer-events: none; /* Görünmez kalkanı tamamen deldik */ }
-  .sidebar-logo {
-    display: flex !important; position: fixed; top: 0; left: 0; width: 50%; height: 60px;
-    background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1rem; z-index: 1000;
-    pointer-events: auto; /* Logoya tıklanabilsin */
-  }
-  .sidebar-user {
-    display: flex !important; position: fixed; top: 0; right: 0; width: 50%; height: 60px;
-    background: var(--surface); border-bottom: 1px solid var(--border); border-top: none; padding: 0 1rem; z-index: 1000; justify-content: flex-end; align-items: center;
-    pointer-events: auto; /* Çıkış butonuna tıklanabilsin */
-  }
+  .sidebar { width: 0; height: 0; background: transparent; border: none; box-shadow: none; z-index: 1000; pointer-events: none; }
+  .sidebar-logo { display: flex !important; position: fixed; top: 0; left: 0; width: 50%; height: 60px; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1rem; z-index: 1000; pointer-events: auto; }
+  .sidebar-user { display: flex !important; position: fixed; top: 0; right: 0; width: 50%; height: 60px; background: var(--surface); border-bottom: 1px solid var(--border); border-top: none; padding: 0 1rem; z-index: 1000; justify-content: flex-end; align-items: center; pointer-events: auto; }
   .user-info { display: none; }
-  .logout-btn { 
-    width: auto; padding: 7px 14px; background: var(--danger-light); 
-    color: var(--danger); border: 1px solid #F7C1C1; font-weight: 600; border-radius: 8px; font-size: 11px;
-  }
+  .logout-btn { width: auto; padding: 7px 14px; background: var(--danger-light); color: var(--danger); border: 1px solid #F7C1C1; font-weight: 600; border-radius: 8px; font-size: 11px; }
   
-  /* 3. ALT NAVİGASYON BARI */
-  .nav { 
-    position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
-    background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-    display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 0; z-index: 1000;
-    pointer-events: auto; /* Alt menülere tıklanabilsin */
-  }
+  .nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 0; z-index: 1000; pointer-events: auto; }
   .nav-section { display: none !important; }
   .nav-item { flex-direction: column; justify-content: center; align-items: center; padding: 6px 0; gap: 4px; font-size: 10px; font-weight: 600; width: 25%; border-radius: 0; color: var(--text3); }
   .nav-item.active { background: transparent; color: var(--accent-mid); }
   .nav-item svg { width: 20px; height: 20px; margin: 0; }
   
-  /* 4. İSTATİSTİKLER VE FORMLAR */
   .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
   .form-row { grid-template-columns: 1fr; gap: 10px; }
   .card-header { flex-direction: column; align-items: stretch; gap: 12px; position: relative; z-index: 10; }
@@ -257,25 +189,14 @@ tr:hover td { background: var(--bg); }
   .search-bar svg { z-index: 2; left: 12px; pointer-events: none; height: 14px; } 
   .search-bar input { padding-left: 36px !important; } 
   
-  /* Mobilde Dropdown Filtrelerini Gizle, İki Butonlu Sistemi Göster */
   .desktop-filters { display: none !important; }
-  .mobile-filters-container {
-    display: flex !important; width: 100%; gap: 10px; margin-top: 5px;
-    position: relative; z-index: 99; /* Görünmez katmanların üstüne çıkarır */
-  }
-  .mobile-filter-btn {
-    flex: 1; padding: 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface);
-    color: var(--text2); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center;
-    position: relative; z-index: 100; /* Tıklanabilirliği %100 garanti altına alır */
-  }
+  .mobile-filters-container { display: flex !important; width: 100%; gap: 10px; margin-top: 5px; position: relative; z-index: 99; }
+  .mobile-filter-btn { flex: 1; padding: 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); color: var(--text2); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; position: relative; z-index: 100; }
   .mobile-filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
   
   input, select, textarea, .btn { padding: 10px !important; font-size: 13px !important; } 
   
-  /* 5. TABLOLARI "KART GÖRÜNÜMÜNE" ÇEVİR */
-  .card-body, #kargolarim-table, #admin-kargolar-table, #admin-son-kargolar, #admin-bekleyen-odemeler, #musteriler-table {
-    overflow-x: hidden; padding: 5px; background: transparent;
-  }
+  .card-body, #kargolarim-table, #admin-kargolar-table, #admin-son-kargolar, #admin-bekleyen-odemeler, #musteriler-table { overflow-x: hidden; padding: 5px; background: transparent; }
   .card { background: transparent; border: none; }
   table, thead, tbody, th, td, tr { display: block; width: 100%; }
   thead tr { display: none; } 
@@ -287,7 +208,6 @@ tr:hover td { background: var(--bg); }
   td:last-child::before { display: none; }
   td:last-child .action-btn { width: 100%; justify-content: center; padding: 8px; background: var(--surface2); font-size: 12px; font-weight: 600; }
   
-  /* 6. MODAL */
   .modal-overlay { padding: 0; align-items: flex-end; z-index: 9999; }
   .modal { width: 100% !important; max-width: 100%; height: 85vh; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out; }
   @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
@@ -297,30 +217,16 @@ tr:hover td { background: var(--bg); }
   #modal-footer button, #modal-footer select { width: 100% !important; height: 44px; font-size: 14px; font-weight: 600; }
 }
 
-/* ════════════════════════════════════════════════════════════ */
-/* 🛠️ MOBİL HATA GİDERİCİ (ZOOM, TIKLAMA VE SELECT KUTULARI)    */
-/* ════════════════════════════════════════════════════════════ */
-@media (max-width: 768px) {
-  input, select, textarea { font-size: 16px !important; }
-}
+@media (max-width: 768px) { input, select, textarea { font-size: 16px !important; } }
 .search-bar svg { pointer-events: none !important; }
-select {
-  -webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important;
-  background-color: var(--surface) !important;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A3A2A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
-  background-repeat: no-repeat !important; background-position: right 12px center !important; background-size: 16px !important; padding-right: 36px !important; cursor: pointer !important;
-  width: 100%; position: relative; z-index: 10;
-}
+select { -webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important; background-color: var(--surface) !important; background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A3A2A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 12px center !important; background-size: 16px !important; padding-right: 36px !important; cursor: pointer !important; width: 100%; position: relative; z-index: 10; }
 </style>
 </head>
 <body>
 
 <div id="sql-modal" class="modal-overlay" style="display:none; z-index:10000;">
   <div class="modal" style="width:680px;">
-    <div class="modal-header">
-      <h3>📋 Supabase SQL Tabloları</h3>
-      <button class="modal-close" onclick="document.getElementById('sql-modal').style.display='none'">✕</button>
-    </div>
+    <div class="modal-header"><h3>📋 Supabase SQL Tabloları</h3><button class="modal-close" onclick="document.getElementById('sql-modal').style.display='none'">✕</button></div>
     <div class="modal-body">
       <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;">Supabase Dashboard → SQL Editor → New Query → Aşağıdakini yapıştırın → Run:</p>
       <textarea readonly style="width:100%;height:380px;font-family:'DM Mono',monospace;font-size:11px;padding:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:none;outline:none;" id="sql-content"></textarea>
@@ -332,18 +238,10 @@ select {
 <div id="auth-screen">
   <div class="auth-card">
     <div class="auth-logo">
-      <div class="auth-logo-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-      </div>
-      <div>
-        <span><strong>EFE</strong>KARGO</span>
-        <sub>Kargo Paneli</sub>
-      </div>
+      <div class="auth-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
+      <div><span><strong>EFE</strong>ABONONET</span><sub>Lojistik Otomasyon Sistemi</sub></div>
     </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchAuthTab('login')">Giriş Yap</button>
-      <button class="auth-tab" onclick="switchAuthTab('register')">Kayıt Ol</button>
-    </div>
+    <div class="auth-tabs"><button class="auth-tab active" onclick="switchAuthTab('login')">Giriş Yap</button><button class="auth-tab" onclick="switchAuthTab('register')">Kayıt Ol</button></div>
     <div id="auth-error" class="auth-error" style="display:none;"></div>
     <div id="login-form">
       <div class="form-group"><label>E-posta</label><input type="email" id="login-email" placeholder="ornek@mail.com" /></div>
@@ -351,10 +249,7 @@ select {
       <button class="btn btn-primary" id="login-btn" onclick="login()">Giriş Yap</button>
     </div>
     <div id="register-form" style="display:none;">
-      <div class="form-row">
-        <div class="form-group"><label>Ad</label><input type="text" id="reg-first" placeholder="Ahmet" /></div>
-        <div class="form-group"><label>Soyad</label><input type="text" id="reg-last" placeholder="Yılmaz" /></div>
-      </div>
+      <div class="form-row"><div class="form-group"><label>Ad</label><input type="text" id="reg-first" placeholder="Ahmet" /></div><div class="form-group"><label>Soyad</label><input type="text" id="reg-last" placeholder="Yılmaz" /></div></div>
       <div class="form-group"><label>E-posta</label><input type="email" id="reg-email" placeholder="ornek@mail.com" /></div>
       <div class="form-group"><label>Telefon</label><input type="tel" id="reg-phone" placeholder="0532 000 0000" /></div>
       <div class="form-group"><label>Şifre</label><input type="password" id="reg-pass" placeholder="En az 6 karakter" /></div>
@@ -366,17 +261,12 @@ select {
 <div id="app">
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-      </div>
+      <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
       <span class="logo-text"><strong>EFE</strong><span style="font-weight: 300;">KARGO</span></span>
     </div>
     <nav class="nav" id="nav-container"></nav>
     <div class="sidebar-user">
-      <div class="user-info">
-        <div class="user-avatar" id="user-avatar-text">AY</div>
-        <div><div class="user-name" id="user-display-name">Kullanıcı</div><div class="user-role" id="user-display-role">Müşteri</div></div>
-      </div>
+      <div class="user-info"><div class="user-avatar" id="user-avatar-text">AY</div><div><div class="user-name" id="user-display-name">Kullanıcı</div><div class="user-role" id="user-display-role">Müşteri</div></div></div>
       <button class="logout-btn" onclick="logout()">Çıkış Yap</button>
     </div>
   </aside>
@@ -389,105 +279,49 @@ select {
         <button class="action-btn primary" onclick="showPage('page-yenikargo')" style="white-space:nowrap;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Yeni Kargo</button>
       </div>
       <div class="stats-grid" id="musteri-stats"></div>
-      <div class="card">
-        <div class="card-header"><h3>Son Kargolarım</h3></div>
-        <div id="musteri-son-kargolar"><div class="loading"><div class="spinner"></div> Yükleniyor...</div></div>
-      </div>
+      <div class="card"><div class="card-header"><h3>Son Kargolarım</h3></div><div id="musteri-son-kargolar"><div class="loading"><div class="spinner"></div> Yükleniyor...</div></div></div>
     </div>
 
     <div id="page-yenikargo" class="page">
       <div class="page-header"><h1>Yeni Kargo Oluştur</h1><p>Kargo bilgilerini doldurun</p></div>
-      <div class="card" style="max-width:600px;">
-        <div class="card-body">
-          <div class="detail-section" style="display: none;">
-            <h4>Gönderici Bilgileri</h4>
-            <div class="form-group"><label>Ad Soyad</label><input type="text" id="g-adsoyad" /></div>
-            <div class="form-row"><div class="form-group"><label>Telefon</label><input type="tel" id="g-tel" /></div><div class="form-group"><label>İl</label><input type="text" id="g-il" /></div></div>
-            <div class="form-group"><label>Açık Adres</label><textarea id="g-adres" rows="2"></textarea></div>
-          </div>
-          <div class="detail-section">
-            <h4>Alıcı Bilgileri</h4>
-            <div class="form-group"><label>Ad Soyad</label><input type="text" id="a-adsoyad" /></div>
-            <div class="form-row"><div class="form-group"><label>Telefon</label><input type="tel" id="a-tel" /></div><div class="form-group"><label>İl</label><input type="text" id="a-il" /></div></div>
-            <div class="form-group"><label>Açık Adres</label><textarea id="a-adres" rows="2"></textarea></div>
-          </div>
-          <div class="detail-section">
-            <h4>Kargo Detayları</h4>
-             <div class="form-row">
-              <div class="form-group">
-                <label>Ödeme Alınacak mı?</label>
-                <select id="odeme-tipi" onchange="toggleUcret('ucret', this.value)"><option value="hayir">Hayır</option><option value="evet">Evet (Tahsilatlı)</option></select>
-              </div>
-              <div class="form-group" id="ucret-kapsayici" style="display: none;">
-                <label>Alınacak Tutar (₺)</label>
-                <input type="number" id="ucret" placeholder="0.00" min="0" step="0.01" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"/>
-              </div>
-            </div>
-            <div class="form-group"><label>Kargo Açıklaması (opsiyonel)</label><textarea id="aciklama" rows="2" placeholder="İçerik, not..."></textarea></div>
-          </div>
+      <div class="card" style="max-width:600px;"><div class="card-body">
+          <div class="detail-section" style="display: none;"><div class="form-group"><label>Ad Soyad</label><input type="text" id="g-adsoyad" /></div><div class="form-row"><div class="form-group"><label>Telefon</label><input type="tel" id="g-tel" /></div><div class="form-group"><label>İl</label><input type="text" id="g-il" /></div></div><div class="form-group"><label>Açık Adres</label><textarea id="g-adres" rows="2"></textarea></div></div>
+          <div class="detail-section"><h4>Alıcı Bilgileri</h4><div class="form-group"><label>Ad Soyad</label><input type="text" id="a-adsoyad" /></div><div class="form-row"><div class="form-group"><label>Telefon</label><input type="tel" id="a-tel" /></div><div class="form-group"><label>İl</label><input type="text" id="a-il" /></div></div><div class="form-group"><label>Açık Adres</label><textarea id="a-adres" rows="2"></textarea></div></div>
+          <div class="detail-section"><h4>Kargo Detayları</h4><div class="form-row"><div class="form-group"><label>Ödeme Alınacak mı?</label><select id="odeme-tipi" onchange="toggleUcret('ucret', this.value)"><option value="hayir">Hayır</option><option value="evet">Evet (Tahsilatlı)</option></select></div><div class="form-group" id="ucret-kapsayici" style="display: none;"><label>Alınacak Tutar (₺)</label><input type="number" id="ucret" placeholder="0.00" min="0" step="0.01" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"/></div></div><div class="form-group"><label>Kargo Açıklaması (opsiyonel)</label><textarea id="aciklama" rows="2" placeholder="İçerik, not..."></textarea></div></div>
           <button class="btn btn-primary" onclick="createKargo()">Kargo Oluştur</button>
-        </div>
-      </div>
+      </div></div>
     </div>
 
     <div id="page-kargolarim" class="page">
       <div class="page-header"><h1>Kargolarım</h1><p>Tüm kargolarınızın listesi</p></div>
-      <div class="card">
-        <div class="card-header">
-          <div class="search-bar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" placeholder="Takip no veya alıcı ara..." oninput="filterMusteriKargolar(this.value)" />
+      <div class="card"><div class="card-header">
+          <div class="search-bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Takip no veya alıcı ara..." oninput="filterMusteriKargolar(this.value)" /></div>
+          <div class="filters" style="display:flex;gap:10px;">
+            <select id="musteri-ay-filter" onchange="filterMusteriKargolarAy(this.value)"><option value="">Tüm Dönemler</option></select>
+            <select onchange="filterMusteriKargolarDurum(this.value)"><option value="">Tüm Durumlar</option><option value="beklemede">Beklemede</option><option value="teslim">Teslim Edildi</option><option value="iptal">İptal</option></select>
           </div>
-          <div class="filters">
-            <select onchange="filterMusteriKargolarDurum(this.value)">
-              <option value="">Tüm Durumlar</option>
-              <option value="beklemede">Beklemede</option>
-              <option value="teslim">Teslim Edildi</option>
-              <option value="iptal">İptal</option>
-            </select>
-          </div>
-        </div>
-        <div id="kargolarim-table"><div class="loading"><div class="spinner"></div> Yükleniyor...</div></div>
-      </div>
+        </div><div id="kargolarim-table"><div class="loading"><div class="spinner"></div> Yükleniyor...</div></div></div>
     </div>
 
     <div id="page-admindashboard" class="page">
       <div class="page-header"><h1>Yönetim Paneli</h1><p>Sistem genel durumu</p></div>
       <div class="stats-grid" id="admin-stats"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.25rem;">
-        <div class="card"><div class="card-header"><h3>Son Kargolar</h3></div><div id="admin-son-kargolar"></div></div>
-        <div class="card"><div class="card-header"><h3>Bekleyen Ödemeler</h3></div><div id="admin-bekleyen-odemeler"></div></div>
-      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.25rem;"><div class="card"><div class="card-header"><h3>Son Kargolar</h3></div><div id="admin-son-kargolar"></div></div><div class="card"><div class="card-header"><h3>Bekleyen Ödemeler</h3></div><div id="admin-bekleyen-odemeler"></div></div></div>
     </div>
 
     <div id="page-tumkargolar" class="page">
       <div class="page-header"><h1>Tüm Kargolar</h1></div>
-      <div class="card">
-        <div class="card-header">
-          <div class="search-bar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" placeholder="Takip no, gönderici, alıcı..." oninput="filterAdminKargolar(this.value)" />
+      <div class="card"><div class="card-header">
+          <div class="search-bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Takip no, gönderici, alıcı..." oninput="filterAdminKargolar(this.value)" /></div>
+          <div class="filters" style="display:flex;gap:10px;align-items:center;">
+            <div class="desktop-filters" style="display:flex;gap:10px;">
+              <select id="admin-durum-filter" onchange="loadAdminKargolar()"><option value="">Tüm Durumlar</option><option value="beklemede">Beklemede</option><option value="teslim">Teslim Edildi</option><option value="iptal">İptal</option></select>
+              <select id="admin-odeme-filter" onchange="loadAdminKargolar()"><option value="">Tüm Ödemeler</option><option value="bekliyor">Bekliyor</option><option value="odendi">Ödendi</option></select>
+            </div>
+            <select id="admin-ay-filter" onchange="loadAdminKargolar()"><option value="">Tüm Dönemler</option></select>
           </div>
-          <div class="filters desktop-filters">
-            <select id="admin-durum-filter" onchange="loadAdminKargolar()">
-              <option value="">Tüm Durumlar</option>
-              <option value="beklemede">Beklemede</option>
-              <option value="teslim">Teslim Edildi</option>
-              <option value="iptal">İptal</option>
-            </select>
-            <select id="admin-odeme-filter" onchange="loadAdminKargolar()">
-              <option value="">Tüm Ödemeler</option>
-              <option value="bekliyor">Bekliyor</option>
-              <option value="odendi">Ödendi</option>
-            </select>
-          </div>
-          <div class="mobile-filters-container">
-            <button id="m-btn-beklemede" class="mobile-filter-btn active" onclick="setMobileAdminFilter('beklemede')">Beklemede</button>
-            <button id="m-btn-teslim" class="mobile-filter-btn" onclick="setMobileAdminFilter('teslim')">Teslim Edildi</button>
-          </div>
-        </div>
-        <div id="admin-kargolar-table"></div>
-      </div>
+          <div class="mobile-filters-container"><button id="m-btn-beklemede" class="mobile-filter-btn active" onclick="setMobileAdminFilter('beklemede')">Beklemede</button><button id="m-btn-teslim" class="mobile-filter-btn" onclick="setMobileAdminFilter('teslim')">Teslim Edildi</button></div>
+        </div><div id="admin-kargolar-table"></div></div>
     </div>
 
     <div id="page-musteriler" class="page">
@@ -498,59 +332,21 @@ select {
     <div id="page-raporlar" class="page">
       <div class="page-header"><h1>Raporlar</h1></div>
       <div class="stats-grid" id="rapor-stats" style="grid-template-columns:repeat(3,1fr);"></div>
-      <div class="card" style="margin-top:1.25rem;">
-        <div class="card-header"><h3>Aylık Kargo Özeti</h3></div>
-        <div id="rapor-aylik"></div>
-      </div>
+      <div class="card" style="margin-top:1.25rem;"><div class="card-header"><h3>Aylık Kargo Özeti</h3></div><div id="rapor-aylik"></div></div>
     </div>
   </main>
 </div>
 
-<div id="kargo-modal" class="modal-overlay" style="display:none;">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="modal-title">Kargo Detayı</h3>
-      <button class="modal-close" onclick="closeModal('kargo-modal')">✕</button>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
-    <div class="modal-footer" id="modal-footer"></div>
-  </div>
-</div>
-
-<div id="edit-modal" class="modal-overlay" style="display:none;">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>Kargo Düzenle</h3>
-      <button class="modal-close" onclick="closeModal('edit-modal')">✕</button>
-    </div>
-    <div class="modal-body" id="edit-body"></div>
-    <div class="modal-footer">
-      <button class="btn btn-outline btn-sm" onclick="closeModal('edit-modal')">İptal</button>
-      <button class="btn btn-primary btn-sm" onclick="saveEdit()">Kaydet</button>
-    </div>
-  </div>
-</div>
-
+<div id="kargo-modal" class="modal-overlay" style="display:none;"><div class="modal"><div class="modal-header"><h3 id="modal-title">Kargo Detayı</h3><button class="modal-close" onclick="closeModal('kargo-modal')">✕</button></div><div class="modal-body" id="modal-body"></div><div class="modal-footer" id="modal-footer"></div></div></div>
+<div id="edit-modal" class="modal-overlay" style="display:none;"><div class="modal"><div class="modal-header"><h3>Kargo Düzenle</h3><button class="modal-close" onclick="closeModal('edit-modal')">✕</button></div><div class="modal-body" id="edit-body"></div><div class="modal-footer"><button class="btn btn-outline btn-sm" onclick="closeModal('edit-modal')">İptal</button><button class="btn btn-primary btn-sm" onclick="saveEdit()">Kaydet</button></div></div></div>
 <div id="toast"></div>
 
 <script>
 const SQL_SCHEMA = `-- KargoNet Supabase SQL Şeması`;
-
-// ─── STATE ───
-let sb = null;
-let currentUser = null;
-let currentProfile = null;
-let allKargolar = [];
-let editingKargoId = null;
-
-// ─── INIT ───
-const SUPABASE_URL = "https://fbpicxycgvcujwlghdgb.supabase.co"; 
-const SUPABASE_KEY = "sb_publishable_hFvPGqqetLI2ze6_daErXw_c4FX4JI2";
-
+let sb = null, currentUser = null, currentProfile = null, allKargolar = [], editingKargoId = null;
+const SUPABASE_URL = "https://fbpicxycgvcujwlghdgb.supabase.co", SUPABASE_KEY = "sb_publishable_hFvPGqqetLI2ze6_daErXw_c4FX4JI2";
 document.getElementById('sql-content').value = SQL_SCHEMA;
-
-initSupabase(SUPABASE_URL, SUPABASE_KEY);
-checkAuth();
+initSupabase(SUPABASE_URL, SUPABASE_KEY); checkAuth();
 
 function showSqlModal() { document.getElementById('sql-modal').style.display = 'flex'; }
 function copySql() { navigator.clipboard.writeText(SQL_SCHEMA); toast('SQL kopyalandı!', 'success'); }
@@ -559,469 +355,219 @@ function initSupabase(url, key) { sb = supabase.createClient(url, key); }
 async function checkAuth() {
   const { data: { session } } = await sb.auth.getSession();
   if (session) { await loadProfile(session.user); showApp(); }
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (session) { await loadProfile(session.user); showApp(); }
-    else { showAuth(); }
-  });
+  sb.auth.onAuthStateChange(async (event, session) => { if (session) { await loadProfile(session.user); showApp(); } else { showAuth(); } });
 }
 
 async function loadProfile(user) {
-  currentUser = user;
-  let { data, error } = await sb.from('profiles').select('*').eq('id', user.id).single();
-  if (error) {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const retry = await sb.from('profiles').select('*').eq('id', user.id).single();
-    data = retry.data;
-  }
+  currentUser = user; let { data, error } = await sb.from('profiles').select('*').eq('id', user.id).single();
+  if (error) { await new Promise(resolve => setTimeout(resolve, 1000)); const retry = await sb.from('profiles').select('*').eq('id', user.id).single(); data = retry.data; }
   currentProfile = data;
 }
 
-// ─── AUTH ───
 function switchAuthTab(tab) {
   document.querySelectorAll('.auth-tab').forEach((t,i)=> t.classList.toggle('active', i === (tab==='login'?0:1)));
-  document.getElementById('login-form').style.display = tab==='login' ? '' : 'none';
-  document.getElementById('register-form').style.display = tab==='register' ? '' : 'none';
-  document.getElementById('auth-error').style.display = 'none';
+  document.getElementById('login-form').style.display = tab==='login' ? '' : 'none'; document.getElementById('register-form').style.display = tab==='register' ? '' : 'none'; document.getElementById('auth-error').style.display = 'none';
 }
 
-async function login() {
-  const email = document.getElementById('login-email').value;
-  const pass = document.getElementById('login-pass').value;
-  const btn = document.getElementById('login-btn');
-  btn.disabled = true; btn.textContent = 'Giriş yapılıyor...';
-  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-  btn.disabled = false; btn.textContent = 'Giriş Yap';
-  if (error) showAuthError(error.message);
-}
-
+async function login() { const email = document.getElementById('login-email').value, pass = document.getElementById('login-pass').value, btn = document.getElementById('login-btn'); btn.disabled = true; btn.textContent = 'Giriş yapılıyor...'; const { error } = await sb.auth.signInWithPassword({ email, password: pass }); btn.disabled = false; btn.textContent = 'Giriş Yap'; if (error) showAuthError(error.message); }
 async function register() {
-  const first = document.getElementById('reg-first').value.trim();
-  const last = document.getElementById('reg-last').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const phone = document.getElementById('reg-phone').value.trim();
-  const pass = document.getElementById('reg-pass').value;
-  if (!first || !last || !email || !pass) return showAuthError('Tüm alanları doldurun.');
-  const btn = document.getElementById('register-btn');
-  btn.disabled = true; btn.textContent = 'Kayıt olunuyor...';
-  const { data, error } = await sb.auth.signUp({ email, password: pass });
-  if (error) { btn.disabled = false; btn.textContent = 'Hesap Oluştur'; return showAuthError(error.message); }
+  const first = document.getElementById('reg-first').value.trim(), last = document.getElementById('reg-last').value.trim(), email = document.getElementById('reg-email').value.trim(), phone = document.getElementById('reg-phone').value.trim(), pass = document.getElementById('reg-pass').value; if (!first || !last || !email || !pass) return showAuthError('Tüm alanları doldurun.');
+  const btn = document.getElementById('register-btn'); btn.disabled = true; btn.textContent = 'Kayıt olunuyor...'; const { data, error } = await sb.auth.signUp({ email, password: pass }); if (error) { btn.disabled = false; btn.textContent = 'Hesap Oluştur'; return showAuthError(error.message); }
   if (data.user) { await sb.from('profiles').insert({ id: data.user.id, first_name: first, last_name: last, phone, role: 'musteri' }); }
-  btn.disabled = false; btn.textContent = 'Hesap Oluştur';
-  toast('Hesap oluşturuldu! Giriş yapabilirsiniz.', 'success');
-  switchAuthTab('login');
+  btn.disabled = false; btn.textContent = 'Hesap Oluştur'; toast('Hesap oluşturuldu! Giriş yapabilirsiniz.', 'success'); switchAuthTab('login');
 }
+function showAuthError(msg) { const el = document.getElementById('auth-error'); el.textContent = msg; el.style.display = ''; }
+async function logout() { try { await sb.auth.signOut(); } catch (error) { console.log(error); } localStorage.clear(); location.reload(); }
 
-function showAuthError(msg) {
-  const el = document.getElementById('auth-error');
-  el.textContent = msg; el.style.display = '';
-}
-
-async function logout() {
-  try { await sb.auth.signOut(); } catch (error) { console.log(error); }
-  localStorage.clear();
-  location.reload();
-}
-
-// ─── NAVIGATION ───
 function showAuth() { document.getElementById('auth-screen').style.display = 'flex'; document.getElementById('app').style.display = 'none'; }
-function showApp() {
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  buildNav(); updateUserInfo();
-  const isAdmin = currentProfile?.role === 'admin';
-  showPage(isAdmin ? 'page-admindashboard' : 'page-musteridashboard');
-}
+function showApp() { document.getElementById('auth-screen').style.display = 'none'; document.getElementById('app').style.display = 'block'; buildNav(); updateUserInfo(); initMonthFilters(); const isAdmin = currentProfile?.role === 'admin'; showPage(isAdmin ? 'page-admindashboard' : 'page-musteridashboard'); }
 
 function buildNav() {
-  const isAdmin = currentProfile?.role === 'admin';
-  const nav = document.getElementById('nav-container');
-  if (isAdmin) {
-    nav.innerHTML = `<div class="nav-section">Yönetim</div><button class="nav-item active" data-page="page-admindashboard" onclick="showPage('page-admindashboard')">${svgHome()} Genel Bakış</button><button class="nav-item" data-page="page-tumkargolar" onclick="showPage('page-tumkargolar')">${svgBox()} Tüm Kargolar</button><button class="nav-item" data-page="page-musteriler" onclick="showPage('page-musteriler')">${svgUsers()} Müşteriler</button><button class="nav-item" data-page="page-raporlar" onclick="showPage('page-raporlar')">${svgChart()} Raporlar</button>`;
-  } else {
-    nav.innerHTML = `<div class="nav-section">Kargom</div><button class="nav-item active" data-page="page-musteridashboard" onclick="showPage('page-musteridashboard')">${svgHome()} Genel Bakış</button><button class="nav-item" data-page="page-yenikargo" onclick="showPage('page-yenikargo')">${svgPlus()} Yeni Kargo</button><button class="nav-item" data-page="page-kargolarim" onclick="showPage('page-kargolarim')">${svgBox()} Kargolarım</button>`;
-  }
+  const isAdmin = currentProfile?.role === 'admin', nav = document.getElementById('nav-container');
+  if (isAdmin) { nav.innerHTML = `<div class="nav-section">Yönetim</div><button class="nav-item active" data-page="page-admindashboard" onclick="showPage('page-admindashboard')">${svgHome()} Genel Bakış</button><button class="nav-item" data-page="page-tumkargolar" onclick="showPage('page-tumkargolar')">${svgBox()} Tüm Kargolar</button><button class="nav-item" data-page="page-musteriler" onclick="showPage('page-musteriler')">${svgUsers()} Müşteriler</button><button class="nav-item" data-page="page-raporlar" onclick="showPage('page-raporlar')">${svgChart()} Raporlar</button>`; }
+  else { nav.innerHTML = `<div class="nav-section">Kargom</div><button class="nav-item active" data-page="page-musteridashboard" onclick="showPage('page-musteridashboard')">${svgHome()} Genel Bakış</button><button class="nav-item" data-page="page-yenikargo" onclick="showPage('page-yenikargo')">${svgPlus()} Yeni Kargo</button><button class="nav-item" data-page="page-kargolarim" onclick="showPage('page-kargolarim')">${svgBox()} Kargolarım</button>`; }
 }
 
 function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === pageId));
-  document.getElementById(pageId).classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === pageId)); document.getElementById(pageId).classList.add('active');
   const loaders = { 'page-musteridashboard': loadMusteriDashboard, 'page-kargolarim': loadKargolarim, 'page-admindashboard': loadAdminDashboard, 'page-tumkargolar': loadAdminKargolar, 'page-musteriler': loadMusteriler, 'page-raporlar': loadRaporlar };
   if (loaders[pageId]) loaders[pageId]();
 }
 
 function updateUserInfo() {
-  const name = `${currentProfile?.first_name || ''} ${currentProfile?.last_name || ''}`.trim() || currentUser?.email;
-  const role = currentProfile?.role === 'admin' ? 'Admin' : 'Müşteri';
-  const initials = name.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2);
-  document.getElementById('user-display-name').textContent = name;
-  document.getElementById('user-display-role').textContent = role;
-  document.getElementById('user-avatar-text').textContent = initials;
+  const name = `${currentProfile?.first_name || ''} ${currentProfile?.last_name || ''}`.trim() || currentUser?.email, role = currentProfile?.role === 'admin' ? 'Admin' : 'Müşteri', initials = name.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2);
+  document.getElementById('user-display-name').textContent = name; document.getElementById('user-display-role').textContent = role; document.getElementById('user-avatar-text').textContent = initials;
   document.getElementById('welcome-name').textContent = `Merhaba, ${currentProfile?.first_name || 'Kullanıcı'} 👋`;
 }
 
-// ─── YENİ SIRALI TAKİP KODU OLUŞTURUCU ───
-async function getNextTrackingNo() {
-  const { data, error } = await sb.from('kargolar').select('tracking_no').like('tracking_no', 'EFE%').order('created_at', { ascending: false }).limit(1);
-  if (error || !data || data.length === 0) return 'EFE1';
-  const sonKargoKodu = data[0].tracking_no;
-  const sayiKismi = parseInt(sonKargoKodu.replace('EFE', ''));
-  return 'EFE' + (isNaN(sayiKismi) ? 1 : sayiKismi + 1);
-}
-
-// ─── ÖDEME KUTUSUNU GÖSTER/GİZLE ───
-function toggleUcret(inputId, deger) {
-  const kapsayici = document.getElementById(inputId + '-kapsayici');
-  const input = document.getElementById(inputId);
-  if (deger === 'evet') { kapsayici.style.display = 'block'; } else { kapsayici.style.display = 'none'; input.value = ''; }
-}
-
-// ─── CREATE KARGO (KURŞUN GEÇİRMEZ VERSİYON) ───
-async function createKargo() {
-  const btn = document.querySelector('#page-yenikargo .btn-primary');
-  try {
-    if(btn) {
-      btn.disabled = true;
-      btn.textContent = 'Kargo Oluşturuluyor... Lütfen Bekleyin';
-    }
-
-    // 1. Bilgileri topla
-    const isim = currentProfile ? `${currentProfile.first_name} ${currentProfile.last_name}`.trim() : 'Müşteri';
-    const tel = currentProfile ? currentProfile.phone : '-';
-
-    // 2. Sıradaki takip numarasını al
-    let yeniTakipNo = await getNextTrackingNo();
-
-    const data = {
-      tracking_no: yeniTakipNo,
-      user_id: currentUser.id,
-      g_adsoyad: isim || 'Sistem',
-      g_tel: tel || '-',
-      g_il: '-',
-      g_adres: 'Sistemde Kayıtlı Adres',
-      a_adsoyad: document.getElementById('a-adsoyad').value.trim() || 'Belirtilmedi',
-      a_tel: document.getElementById('a-tel').value.trim() || '-',
-      a_il: document.getElementById('a-il').value.trim() || '-',
-      a_adres: document.getElementById('a-adres').value.trim() || '-',
-      odeme_tipi: document.getElementById('odeme-tipi').value || 'hayir',
-      ucret: document.getElementById('odeme-tipi').value === 'evet' ? (parseFloat(document.getElementById('ucret').value) || 0) : 0,
-      aciklama: document.getElementById('aciklama').value.trim(),
-      durum: 'beklemede',
-      odeme_durumu: 'bekliyor',
-    };
-
-    // 3. Veritabanına kayıt işlemi
-    let { data: newKargo, error } = await sb.from('kargolar').insert(data).select().single();
-
-    // 4. ÇAKIŞMA KONTROLÜ: Eğer EFE kodu başka birinde varsa (Hata Kodu: 23505)
-    if (error && error.code === '23505') {
-        console.warn("Kod çakışması yaşandı, alternatif kod üretiliyor...");
-        // Çakışmayı önlemek için sonuna rastgele 3 haneli güvenlik kodu ekle
-        data.tracking_no = yeniTakipNo + '-' + Math.floor(100 + Math.random() * 900);
-        const retry = await sb.from('kargolar').insert(data).select().single();
-        newKargo = retry.data;
-        error = retry.error;
-        yeniTakipNo = data.tracking_no; // Başarılı olan yeni kodu güncelle
-    }
-
-    // Başka bir veritabanı hatası varsa uyar ve butonu serbest bırak
-    if (error) {
-      alert('Kayıt Başarısız: ' + error.message);
-      if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; }
-      return;
-    }
-
-    // 5. Geçmiş Tablosuna Ekle
-    if (newKargo && newKargo.id) {
-       await sb.from('kargo_gecmis').insert({ kargo_id: newKargo.id, durum: 'beklemede', not: 'Kargo sisteme girildi' });
-    }
-
-    // 6. Formu Temizle
-    document.getElementById('a-adsoyad').value = '';
-    document.getElementById('a-tel').value = '';
-    document.getElementById('a-il').value = '';
-    document.getElementById('a-adres').value = '';
-    document.getElementById('ucret').value = '';
-    document.getElementById('aciklama').value = '';
-
-    // 7. Başarı Mesajı ve Yönlendirme
-    toast('Kargo başarıyla oluşturuldu! (Takip No: ' + yeniTakipNo + ')', 'success');
-    showPage('page-kargolarim');
-    
-    if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; }
-
-  } catch (err) {
-    console.error("Kritik JS Hatası:", err);
-    alert('Sistemsel bir hata oluştu. Detay: ' + err.message);
-    if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; }
+// ─── DÖNEM MOTORU (OTOMATİK AYLIK PARTİ OLUŞTURUCU) ───
+function initMonthFilters() {
+  const months = []; const d = new Date();
+  for (let i = 0; i < 12; i++) {
+    const year = d.getFullYear(), month = String(d.getMonth() + 1).padStart(2, '0');
+    const label = d.toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' });
+    months.push({ value: `${year}-${month}`, label }); d.setMonth(d.getMonth() - 1);
   }
+  ['musteri-ay-filter', 'admin-ay-filter'].forEach(id => {
+    const el = document.getElementById(id); if (el) { el.innerHTML = '<option value="">Tüm Dönemler</option>' + months.map(m => `<option value="${m.value}">${m.label}</option>`).join(''); }
+  });
+}
+
+async function getNextTrackingNo() {
+  const { data, error } = await sb.from('kargolar').select('tracking_no').like('tracking_no', 'EFE%').order('created_at', { ascending: false }).limit(1); if (error || !data || data.length === 0) return 'EFE1';
+  const sonKargoKodu = data[0].tracking_no, sayiKismi = parseInt(sonKargoKodu.replace('EFE', '')); return 'EFE' + (isNaN(sayiKismi) ? 1 : sayiKismi + 1);
+}
+
+function toggleUcret(inputId, deger) { const kapsayici = document.getElementById(inputId + '-kapsayici'), input = document.getElementById(inputId); if (deger === 'evet') { kapsayici.style.display = 'block'; } else { kapsayici.style.display = 'none'; input.value = ''; } }
+
+async function createKargo() {
+  const btn = document.querySelector('#page-yenikargo .btn-primary'); try {
+    if(btn) { btn.disabled = true; btn.textContent = 'Kargo Oluşturuluyor... Lütfen Bekleyin'; }
+    const isim = currentProfile ? `${currentProfile.first_name} ${currentProfile.last_name}`.trim() : 'Müşteri', tel = currentProfile ? currentProfile.phone : '-';
+    let yeniTakipNo = await getNextTrackingNo();
+    const data = { tracking_no: yeniTakipNo, user_id: currentUser.id, g_adsoyad: isim || 'Sistem', g_tel: tel || '-', g_il: '-', g_adres: 'Sistemde Kayıtlı Adres', a_adsoyad: document.getElementById('a-adsoyad').value.trim() || 'Belirtilmedi', a_tel: document.getElementById('a-tel').value.trim() || '-', a_il: document.getElementById('a-il').value.trim() || '-', a_adres: document.getElementById('a-adres').value.trim() || '-', odeme_tipi: document.getElementById('odeme-tipi').value || 'hayir', ucret: document.getElementById('odeme-tipi').value === 'evet' ? (parseFloat(document.getElementById('ucret').value) || 0) : 0, aciklama: document.getElementById('aciklama').value.trim(), durum: 'beklemede', odeme_durumu: 'bekliyor' };
+    let { data: newKargo, error } = await sb.from('kargolar').insert(data).select().single();
+    if (error && error.code === '23505') { data.tracking_no = yeniTakipNo + '-' + Math.floor(100 + Math.random() * 900); const retry = await sb.from('kargolar').insert(data).select().single(); newKargo = retry.data; error = retry.error; yeniTakipNo = data.tracking_no; }
+    if (error) { alert('Kayıt Başarısız: ' + error.message); if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; } return; }
+    if (newKargo && newKargo.id) { await sb.from('kargo_gecmis').insert({ kargo_id: newKargo.id, durum: 'beklemede', not: 'Kargo sisteme girildi' }); }
+    document.getElementById('a-adsoyad').value = ''; document.getElementById('a-tel').value = ''; document.getElementById('a-il').value = ''; document.getElementById('a-adres').value = ''; document.getElementById('ucret').value = ''; document.getElementById('aciklama').value = '';
+    toast('Kargo oluşturuldu! (Takip No: ' + yeniTakipNo + ')', 'success'); showPage('page-kargolarim'); if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; }
+  } catch (err) { if(btn) { btn.disabled = false; btn.textContent = 'Kargo Oluştur'; } }
 }
   
-// ─── MUSTERI DASHBOARD ───
 async function loadMusteriDashboard() {
-  const { data } = await sb.from('kargolar').select('*').eq('user_id', currentUser.id);
-  const all = data || [];
-  const stats = [
-    { label: 'Toplam Kargo', value: all.length, sub: 'tüm zamanlar' },
-    { label: 'Beklemede', value: all.filter(k=>k.durum==='beklemede').length, sub: 'onay bekleniyor' },
-    { label: 'Teslim Edildi', value: all.filter(k=>k.durum==='teslim').length, sub: 'tamamlanan' },
-    { label: 'İptal Edilen', value: all.filter(k=>k.durum==='iptal').length, sub: 'iptal' },
-  ];
+  const { data } = await sb.from('kargolar').select('*').eq('user_id', currentUser.id); const all = data || [];
+  const stats = [ { label: 'Toplam Kargo', value: all.length, sub: 'tüm zamanlar' }, { label: 'Beklemede', value: all.filter(k=>k.durum==='beklemede').length, sub: 'onay bekleniyor' }, { label: 'Teslim Edildi', value: all.filter(k=>k.durum==='teslim').length, sub: 'tamamlanan' }, { label: 'İptal Edilen', value: all.filter(k=>k.durum==='iptal').length, sub: 'iptal' } ];
   document.getElementById('musteri-stats').innerHTML = stats.map(s => `<div class="stat-card"><div class="stat-label">${s.label}</div><div class="stat-value">${s.value}</div><div class="stat-sub">${s.sub}</div></div>`).join('');
-  const son5 = all.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5);
-  document.getElementById('musteri-son-kargolar').innerHTML = son5.length ? kargoTable(son5, false) : emptyState('Henüz kargo yok');
+  const son5 = all.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5); document.getElementById('musteri-son-kargolar').innerHTML = son5.length ? kargoTable(son5, false) : emptyState('Henüz kargo yok');
 }
 
-// ─── KARGOLARIM ───
-let musteriKargolarAll = [];
-let musteriKargolarFiltered = [];
+// ─── MUSTERI FILTRE GRUBU (AYLIK PARTI DESTEKLI) ───
+let musteriKargolarAll = [], musteriKargolarFiltered = [], musteriSearchQ = '', musteriStatusQ = '', musteriMonthQ = '';
 async function loadKargolarim() {
   document.getElementById('kargolarim-table').innerHTML = '<div class="loading"><div class="spinner"></div> Yükleniyor...</div>';
   const { data } = await sb.from('kargolar').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
-  musteriKargolarAll = data || []; musteriKargolarFiltered = [...musteriKargolarAll]; renderKargolarim();
+  musteriKargolarAll = data || []; musteriKargolarFiltered = [...musteriKargolarAll]; applyMusteriFilters();
 }
-function filterMusteriKargolar(q) {
-  q = q.toLowerCase();
-  musteriKargolarFiltered = musteriKargolarAll.filter(k => k.tracking_no.toLowerCase().includes(q) || k.a_adsoyad.toLowerCase().includes(q) || k.g_adsoyad.toLowerCase().includes(q));
-  renderKargolarim();
+function filterMusteriKargolar(q) { musteriSearchQ = q.toLowerCase(); applyMusteriFilters(); }
+function filterMusteriKargolarDurum(durum) { musteriStatusQ = durum; applyMusteriFilters(); }
+function filterMusteriKargolarAy(ay) { musteriMonthQ = ay; applyMusteriFilters(); }
+function applyMusteriFilters() {
+  musteriKargolarFiltered = musteriKargolarAll.filter(k => {
+    const mSearch = k.tracking_no.toLowerCase().includes(mSearchQ) || k.a_adsoyad.toLowerCase().includes(mSearchQ);
+    const mStatus = musteriStatusQ ? k.durum === musteriStatusQ : true;
+    const mMonth = musteriMonthQ ? k.created_at.startsWith(musteriMonthQ) : true;
+    return mSearch && mStatus && mMonth;
+  });
+  document.getElementById('kargolarim-table').innerHTML = musteriKargolarFiltered.length ? kargoTable(musteriKargolarFiltered, false) : emptyState('Kargo bulunamadı');
 }
-function filterMusteriKargolarDurum(durum) { musteriKargolarFiltered = durum ? musteriKargolarAll.filter(k => k.durum === durum) : [...musteriKargolarAll]; renderKargolarim(); }
-function renderKargolarim() { document.getElementById('kargolarim-table').innerHTML = musteriKargolarFiltered.length ? kargoTable(musteriKargolarFiltered, false) : emptyState('Kargo bulunamadı'); }
 
-// ─── ADMIN DASHBOARD ───
 async function loadAdminDashboard() {
-  const { data: kargolar } = await sb.from('kargolar').select('*');
-  const all = kargolar || [];
+  const { data: kargolar } = await sb.from('kargolar').select('*'); const all = kargolar || [];
   const totalGelir = all.filter(k=>k.odeme_durumu==='odendi').reduce((s,k)=>s+parseFloat(k.ucret||0),0);
-  const stats = [
-    { label: 'Toplam Kargo', value: all.length },
-    { label: 'Teslim Edildi', value: all.filter(k=>k.durum==='teslim').length },
-    { label: 'Bekleyen Ödeme', value: all.filter(k=>k.odeme_durumu==='bekliyor').length },
-    { label: 'Toplam Gelir', value: '₺' + totalGelir.toLocaleString('tr-TR', {minimumFractionDigits:2}) },
-  ];
+  const stats = [ { label: 'Toplam Kargo', value: all.length }, { label: 'Teslim Edildi', value: all.filter(k=>k.durum==='teslim').length }, { label: 'Bekleyen Ödeme', value: all.filter(k=>k.odeme_durumu==='bekliyor').length }, { label: 'Toplam Gelir', value: '₺' + totalGelir.toLocaleString('tr-TR', {minimumFractionDigits:2}) } ];
   document.getElementById('admin-stats').innerHTML = stats.map(s => `<div class="stat-card"><div class="stat-label">${s.label}</div><div class="stat-value" style="font-size:${typeof s.value==='string'&&s.value.length>6?'18px':'24px'}">${s.value}</div></div>`).join('');
-  const son = all.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5);
-  document.getElementById('admin-son-kargolar').innerHTML = son.length ? kargoTableSmall(son) : emptyState('Kargo yok');
-  const bek = all.filter(k=>k.odeme_durumu==='bekliyor').slice(0,5);
-  document.getElementById('admin-bekleyen-odemeler').innerHTML = bek.length ? odemelerTableSmall(bek) : emptyState('Bekleyen ödeme yok');
+  const son = all.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5); document.getElementById('admin-son-kargolar').innerHTML = son.length ? kargoTableSmall(son) : emptyState('Kargo yok');
+  const bek = all.filter(k=>k.odeme_durumu==='bekliyor').slice(0,5); document.getElementById('admin-bekleyen-odemeler').innerHTML = bek.length ? odemelerTableSmall(bek) : emptyState('Bekleyen ödeme yok');
 }
 
-// ─── ADMIN ALL CARGOS ───
 let currentMobileAdminFilter = 'beklemede';
-
-function setMobileAdminFilter(status) {
-  currentMobileAdminFilter = status;
-  document.getElementById('m-btn-beklemede').classList.toggle('active', status === 'beklemede');
-  document.getElementById('m-btn-teslim').classList.toggle('active', status === 'teslim');
-  loadAdminKargolar();
-}
+function setMobileAdminFilter(status) { currentMobileAdminFilter = status; document.getElementById('m-btn-beklemede').classList.toggle('active', status === 'beklemede'); document.getElementById('m-btn-teslim').classList.toggle('active', status === 'teslim'); loadAdminKargolar(); }
 
 async function loadAdminKargolar() {
   document.getElementById('admin-kargolar-table').innerHTML = '<div class="loading"><div class="spinner"></div> Yükleniyor...</div>';
   let q = sb.from('kargolar').select('*, profiles(first_name, last_name)').order('created_at', { ascending: false });
-  
-  if (window.innerWidth <= 768) {
-    q = q.eq('durum', currentMobileAdminFilter);
-  } else {
-    const dur = document.getElementById('admin-durum-filter')?.value;
-    const ode = document.getElementById('admin-odeme-filter')?.value;
-    if (dur) q = q.eq('durum', dur);
-    if (ode) q = q.eq('odeme_durumu', ode);
-  }
-  
-  const { data } = await q;
-  allKargolar = data || [];
-  renderAdminKargolar(allKargolar);
+  const ay = document.getElementById('admin-ay-filter')?.value; if (ay) q = q.like('created_at', `${ay}%`);
+  if (window.innerWidth <= 768) { q = q.eq('durum', currentMobileAdminFilter); } 
+  else { const dur = document.getElementById('admin-durum-filter')?.value, ode = document.getElementById('admin-odeme-filter')?.value; if (dur) q = q.eq('durum', dur); if (ode) q = q.eq('odeme_durumu', ode); }
+  const { data } = await q; allKargolar = data || []; renderAdminKargolar(allKargolar);
 }
+function filterAdminKargolar(q) { q = q.toLowerCase(); const filtered = allKargolar.filter(k => k.tracking_no.toLowerCase().includes(q) || k.a_adsoyad.toLowerCase().includes(q) || k.g_adsoyad.toLowerCase().includes(q)); renderAdminKargolar(filtered); }
+function renderAdminKargolar(data) { if (!data.length) { document.getElementById('admin-kargolar-table').innerHTML = emptyState('Kargo bulunamadı'); return; } document.getElementById('admin-kargolar-table').innerHTML = kargoTable(data, true); }
 
-function filterAdminKargolar(q) {
-  q = q.toLowerCase();
-  const filtered = allKargolar.filter(k => k.tracking_no.toLowerCase().includes(q) || k.a_adsoyad.toLowerCase().includes(q) || k.g_adsoyad.toLowerCase().includes(q));
-  renderAdminKargolar(filtered);
-}
-
-function renderAdminKargolar(data) {
-  if (!data.length) { document.getElementById('admin-kargolar-table').innerHTML = emptyState('Kargo bulunamadı'); return; }
-  document.getElementById('admin-kargolar-table').innerHTML = kargoTable(data, true);
-}
-
-// ─── CUSTOMERS ───
 async function loadMusteriler() {
-  const { data } = await sb.from('profiles').select('*, kargolar(count)').eq('role', 'musteri').order('created_at', { ascending: false });
-  const musteriler = data || [];
-  document.getElementById('musteriler-table').innerHTML = `<table><thead><tr><th>Müşteri</th><th>Telefon</th><th>Kayıt Tarihi</th><th>İşlem</th></tr></thead><tbody>${musteriler.map(m => `<tr><td data-label="Müşteri"><div class="customer-chip"><div class="customer-avatar-sm">${(m.first_name[0]||'')+(m.last_name[0]||'')}</div><span>${m.first_name} ${m.last_name}</span></div></td><td data-label="Telefon" style="color:var(--text2)">${m.phone||'—'}</td><td data-label="Kayıt Tarihi" style="color:var(--text2)">${fmtDate(m.created_at)}</td><td data-label="İşlem"><button class="action-btn" onclick="showMusteriKargolar('${m.id}','${m.first_name} ${m.last_name}')">Kargolarını Gör</button></td></tr>`).join('')}</tbody></table>`;
+  const { data } = await sb.from('profiles').select('*, kargolar(count)').eq('role', 'musteri').order('created_at', { ascending: false }); const musteriler = data || [];
+  document.getElementById('musteriler-table').innerHTML = `<table><thead><tr><th>Müşteri</th><th>Telefon</th><th>Kayıt Tarihi</th><th>İşlem</th></tr></thead><tbody>${musteriler.map(m => `<tr><td data-label="Müşteri"><div class="customer-chip"><div class="customer-avatar-sm">${(m.first_name[0]||'')+(m.last_name[0]||'')}</div><span>${m.first_name} ${m.last_name}</span></div></td><td data-label="Telefon" style="color:var(--text2)">${m.phone||'—'}</td><td data-label="Kayıt Tarihi" style="color:var(--text2)">${fmtDate(m.created_at)}</td><td data-label="İşlem"><button class="action-btn" onclick="showMusteriKargolar('${m.id}','${m.first_name} ${m.last_name}')">Cari & Kargolar</button></td></tr>`).join('')}</tbody></table>`;
 }
 
+// ─── HARİKA MÜŞTERİ CARİ HESAP EKSTRESİ OLUŞTURUCU ───
 async function showMusteriKargolar(userId, name) {
-  const { data } = await sb.from('kargolar').select('*').eq('user_id', userId).order('created_at', { ascending: false });
-  document.getElementById('modal-title').textContent = `${name} — Kargolar`;
-  document.getElementById('modal-body').innerHTML = (data||[]).length ? kargoTable(data, true) : emptyState('Bu müşteriye ait kargo yok');
-  document.getElementById('modal-footer').innerHTML = '';
-  document.getElementById('kargo-modal').style.display = 'flex';
+  const { data } = await sb.from('kargolar').select('*').eq('user_id', userId).order('created_at', { ascending: false }); const userKargolar = data || [];
+  document.getElementById('modal-title').textContent = `${name} — Cari Hesap Ekstresi`;
+  
+  const monthsMap = {}; userKargolar.forEach(k => { monthsMap[k.created_at.slice(0,7)] = true; }); monthsMap[new Date().toISOString().slice(0,7)] = true;
+  const sortedMonths = Object.keys(monthsMap).sort().reverse();
+
+  document.getElementById('modal-body').innerHTML = `
+    <div style="margin-bottom:12px; display:flex; gap:10px; align-items:center;">
+      <span style="font-size:12px; font-weight:600; color:var(--text2)">Parti / Dönem Seçin:</span>
+      <select id="cari-ay-select" onchange="updateCariView()" style="padding:6px 12px; font-size:12px; border:1px solid var(--border); border-radius:6px; background:var(--surface);">
+        <option value="">Tüm Zamanlar</option>${sortedMonths.map(m => `<option value="${m}">${m}</option>`).join('')}
+      </select>
+    </div>
+    <div id="cari-ozet-kapsayici"></div><div id="cari-kargolar-listesi"></div>`;
+  document.getElementById('modal-footer').innerHTML = ''; document.getElementById('kargo-modal').style.display = 'flex';
+  window.currentCariKargolar = userKargolar; updateCariView();
 }
 
-// ─── REPORTS ───
+window.updateCariView = function() {
+  const selectedMonth = document.getElementById('cari-ay-select').value;
+  const filtered = selectedMonth ? window.currentCariKargolar.filter(k => k.created_at.startsWith(selectedMonth)) : window.currentCariKargolar;
+  const tahsilatli = filtered.filter(k => k.odeme_tipi === 'evet');
+  const toplamCari = tahsilatli.reduce((sum, k) => sum + parseFloat(k.ucret || 0), 0);
+  const odenenCari = tahsilatli.filter(k => k.odeme_durumu === 'odendi').reduce((sum, k) => sum + parseFloat(k.ucret || 0), 0);
+  const bekleyenCari = toplamCari - odenenCari;
+
+  document.getElementById('cari-ozet-kapsayici').innerHTML = `
+    <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:15px; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; text-align:center;">
+      <div><h5 style="font-size:9px; color:var(--text2); text-transform:uppercase; margin-bottom:2px;">Cari Hacim</h5><p style="font-size:12px; font-weight:bold; color:var(--text); font-family:'DM Mono',monospace;">₺${toplamCari.toFixed(2)}</p></div>
+      <div><h5 style="font-size:9px; color:var(--success); text-transform:uppercase; margin-bottom:2px;">Ödenen</h5><p style="font-size:12px; font-weight:bold; color:var(--success); font-family:'DM Mono',monospace;">₺${odenenCari.toFixed(2)}</p></div>
+      <div><h5 style="font-size:9px; color:var(--warn); text-transform:uppercase; margin-bottom:2px;">Kuryede / Bekleyen</h5><p style="font-size:12px; font-weight:bold; color:var(--warn); font-family:'DM Mono',monospace;">₺${bekleyenCari.toFixed(2)}</p></div>
+    </div>`;
+  document.getElementById('cari-kargolar-listesi').innerHTML = filtered.length ? kargoTable(filtered, true) : emptyState('Seçili döneme ait kargo bulunamadı');
+}
+
 async function loadRaporlar() {
-  const { data: kargolar } = await sb.from('kargolar').select('*');
-  const all = kargolar || [];
-  const totalGelir = all.filter(k=>k.odeme_durumu==='odendi').reduce((s,k)=>s+parseFloat(k.ucret||0),0);
-  const bekGelir = all.filter(k=>k.odeme_durumu==='bekliyor').reduce((s,k)=>s+parseFloat(k.ucret||0),0);
+  const { data: kargolar } = await sb.from('kargolar').select('*'); const all = kargolar || [];
+  const totalGelir = all.filter(k=>k.odeme_durumu==='odendi').reduce((s,k)=>s+parseFloat(k.ucret||0),0), bekGelir = all.filter(k=>k.odeme_durumu==='bekliyor').reduce((s,k)=>s+parseFloat(k.ucret||0),0);
   document.getElementById('rapor-stats').innerHTML = [{ label: 'Toplam Kargo', value: all.length }, { label: 'Tahsil Edilen', value: '₺' + totalGelir.toLocaleString('tr-TR',{minimumFractionDigits:2}) }, { label: 'Bekleyen Tahsilat', value: '₺' + bekGelir.toLocaleString('tr-TR',{minimumFractionDigits:2}) }].map(s => `<div class="stat-card"><div class="stat-label">${s.label}</div><div class="stat-value" style="font-size:20px">${s.value}</div></div>`).join('');
-  const byMonth = {};
-  all.forEach(k => {
-    const m = k.created_at.slice(0,7);
-    if (!byMonth[m]) byMonth[m] = { toplam:0, teslim:0, gelir:0 };
-    byMonth[m].toplam++;
-    if (k.durum==='teslim') byMonth[m].teslim++;
-    if (k.odeme_durumu==='odendi') byMonth[m].gelir += parseFloat(k.ucret||0);
-  });
+  const byMonth = {}; all.forEach(k => { const m = k.created_at.slice(0,7); if (!byMonth[m]) byMonth[m] = { toplam:0, teslim:0, gelir:0 }; byMonth[m].toplam++; if (k.durum==='teslim') byMonth[m].teslim++; if (k.odeme_durumu==='odendi') byMonth[m].gelir += parseFloat(k.ucret||0); });
   const months = Object.keys(byMonth).sort().reverse();
   document.getElementById('rapor-aylik').innerHTML = months.length ? `<table><thead><tr><th>Ay</th><th>Toplam</th><th>Teslim</th><th>Gelir</th></tr></thead><tbody>${months.map(m=>`<tr><td data-label="Rapor Ayı" style="font-weight:500">${m}</td><td data-label="Toplam Kargo">${byMonth[m].toplam} Adet</td><td data-label="Teslim Edilen">${byMonth[m].teslim} Adet</td><td data-label="Aylık Gelir" style="font-family:'DM Mono',monospace;font-size:12px">₺${byMonth[m].gelir.toLocaleString('tr-TR',{minimumFractionDigits:2})}</td></tr>`).join('')}</tbody></table>` : emptyState('Veri yok');
 }
 
-// ─── DETAIL MODAL ───
 async function showKargoDetail(id) {
-  const { data: k } = await sb.from('kargolar').select('*').eq('id', id).single();
-  const { data: gecmis } = await sb.from('kargo_gecmis').select('*').eq('kargo_id', id).order('created_at');
+  const { data: k } = await sb.from('kargolar').select('*').eq('id', id).single(), { data: gecmis } = await sb.from('kargo_gecmis').select('*').eq('kargo_id', id).order('created_at');
   document.getElementById('modal-title').textContent = `Kargo: ${k.tracking_no}`;
-  document.getElementById('modal-body').innerHTML = `
-    <div class="detail-section"><h4>Durum</h4><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">${badgeHtml(k.durum)} ${badgeOdeme(k.odeme_durumu)}<span style="font-size:12px;color:var(--text3)">${fmtDate(k.created_at)}</span></div></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-      <div class="detail-section"><h4>Gönderici</h4><div class="detail-item" style="margin-bottom:6px"><label>Ad Soyad</label><span>${k.g_adsoyad}</span></div><div class="detail-item" style="margin-bottom:6px"><label>Telefon</label><span>${k.g_tel||'—'}</span></div><div class="detail-item" style="margin-bottom:6px"><label>İl</label><span>${k.g_il||'—'}</span></div><div class="detail-item"><label>Adres</label><span>${k.g_adres||'—'}</span></div></div>
-      <div class="detail-section"><h4>Alıcı</h4><div class="detail-item" style="margin-bottom:6px"><label>Ad Soyad</label><span>${k.a_adsoyad}</span></div><div class="detail-item" style="margin-bottom:6px"><label>Telefon</label><span>${k.a_tel||'—'}</span></div><div class="detail-item" style="margin-bottom:6px"><label>İl</label><span>${k.a_il||'—'}</span></div><div class="detail-item"><label>Adres</label><span>${k.a_adres||'—'}</span></div></div>
-    </div>
-     <div class="detail-section"><h4>Ödeme</h4><div class="detail-grid"><div class="detail-item"><label>Ödeme Durumu</label><span>${k.odeme_tipi==='evet'?'Tahsilatlı (Ödeme Alınacak)':'Ödeme Alınmayacak'}</span></div><div class="detail-item"><label>Ücret</label><span style="font-family:'DM Mono',monospace">${k.odeme_tipi==='evet' ? '₺'+parseFloat(k.ucret||0).toFixed(2) : '—'}</span></div></div></div>
-    ${k.aciklama ? `<div class="detail-section"><h4>Açıklama</h4><p style="font-size:13px;color:var(--text2)">${k.aciklama}</p></div>` : ''}
-    <div class="detail-section"><h4>Durum Geçmişi</h4><div class="timeline">${(gecmis||[]).map((g,i)=>`<div class="timeline-item"><div class="timeline-dot ${i===gecmis.length-1?'filled':''}"></div><div class="timeline-time">${fmtDateFull(g.created_at)}</div><div class="timeline-status">${durumLabel(g.durum)}</div>${g.not ? `<div class="timeline-note">${g.not}</div>` : ''}</div>`).join('')}</div></div>`;
-
-  const isAdmin = currentProfile?.role === 'admin';
-  const isOwner = k.user_id === currentUser.id; 
-  document.getElementById('modal-footer').style.display = 'block'; 
-  let footerHtml = `<div style="display: flex; flex-direction: column; gap: 16px; width: 100%;">`;
-  
-  if (isAdmin) {
-    footerHtml += `
-      <div style="background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;">
-        <div style="font-size: 11px; font-weight: 700; color: var(--text2); letter-spacing: 0.5px;">DURUM GÜNCELLE</div>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
-          <select id="durum-select" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);outline:none;cursor:pointer;">
-            <option value="beklemede" ${k.durum==='beklemede'?'selected':''}>Beklemede</option>
-            <option value="teslim" ${k.durum==='teslim'?'selected':''}>Teslim Edildi</option>
-            <option value="iptal" ${k.durum==='iptal'?'selected':''}>İptal</option>
-          </select>
-          <select id="odeme-select" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);outline:none;cursor:pointer;">
-            <option value="bekliyor" ${k.odeme_durumu==='bekliyor'?'selected':''}>Ödeme Bekliyor</option>
-            <option value="odendi" ${k.odeme_durumu==='odendi'?'selected':''}>Ödendi</option>
-          </select>
-          <button class="btn btn-primary btn-sm" onclick="updateKargoDurum('${k.id}')" style="padding:6px 14px;">Güncelle</button>
-        </div>
-      </div>`;
-  } 
-  
-  footerHtml += `<div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">`;
-  footerHtml += `<button class="btn btn-outline btn-sm" onclick="printKargoFisi('${k.id}')">🖨️ Fiş Yazdır</button>`;
-  
-  if (isAdmin) {
-    footerHtml += `<div style="display: flex; gap: 8px;"><button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')">Düzenle</button><button class="btn btn-danger-outline btn-sm" onclick="deleteKargo('${k.id}')">Sil</button></div>`;
-  } else if (isOwner) {
-    if (k.durum === 'beklemede') {
-      footerHtml += `<div style="display: flex; gap: 8px;"><button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')">Düzenle</button><button class="btn btn-danger-outline btn-sm" onclick="deleteKargo('${k.id}')">Sil</button></div>`;
-    } else {
-      footerHtml += `<span style="font-size:11px;color:var(--text3);font-style:italic;">İşlem görmüş kargolar düzenlenemez.</span>`;
-    }
-  } else { footerHtml += `<div></div>`; }
-  
-  footerHtml += `</div></div>`;
-  document.getElementById('modal-footer').innerHTML = footerHtml;
-  document.getElementById('kargo-modal').style.display = 'flex';
+  document.getElementById('modal-body').innerHTML = `<div class="detail-section"><h4>Durum</h4><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">${badgeHtml(k.durum)} ${badgeOdeme(k.odeme_durumu)}<span style="font-size:12px;color:var(--text3)">${fmtDate(k.created_at)}</span></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;"><div class="detail-section"><h4>Gönderici</h4><div class="detail-item" style="margin-bottom:6px"><label>Ad Soyad</label><span>${k.g_adsoyad}</span></div><div class="detail-item" style="margin-bottom:6px"><label>Telefon</label><span>${k.g_tel||'—'}</span></div><div class="detail-item" style="margin-bottom:6px"><label>İl</label><span>${k.g_il||'—'}</span></div><div class="detail-item"><label>Adres</label><span>${k.g_adres||'—'}</span></div></div><div class="detail-section"><h4>Alıcı</h4><div class="detail-item" style="margin-bottom:6px"><label>Ad Soyad</label><span>${k.a_adsoyad}</span></div><div class="detail-item" style="margin-bottom:6px"><label>Telefon</label><span>${k.a_tel||'—'}</span></div><div class="detail-item" style="margin-bottom:6px"><label>İl</label><span>${k.a_il||'—'}</span></div><div class="detail-item"><label>Adres</label><span>${k.a_adres||'—'}</span></div></div></div><div class="detail-section"><h4>Ödeme</h4><div class="detail-grid"><div class="detail-item"><label>Ödeme Durumu</label><span>${k.odeme_tipi==='evet'?'Tahsilatlı (Ödeme Alınacak)':'Ödeme Alınmayacak'}</span></div><div class="detail-item"><label>Ücret</label><span style="font-family:'DM Mono',monospace">${k.odeme_tipi==='evet' ? '₺'+parseFloat(k.ucret||0).toFixed(2) : '—'}</span></div></div></div>${k.aciklama ? `<div class="detail-section"><h4>Açıklama</h4><p style="font-size:13px;color:var(--text2)">${k.aciklama}</p></div>` : ''}<div class="detail-section"><h4>Durum Geçmişi</h4><div class="timeline">${(gecmis||[]).map((g,i)=>`<div class="timeline-item"><div class="timeline-dot ${i===gecmis.length-1?'filled':''}"></div><div class="timeline-time">${fmtDateFull(g.created_at)}</div><div class="timeline-status">${durumLabel(g.durum)}</div>${g.not ? `<div class="timeline-note">${g.not}</div>` : ''}</div>`).join('')}</div></div>`;
+  const isAdmin = currentProfile?.role === 'admin', isOwner = k.user_id === currentUser.id; document.getElementById('modal-footer').style.display = 'block'; let footerHtml = `<div style="display: flex; flex-direction: column; gap: 16px; width: 100%;">`;
+  if (isAdmin) { footerHtml += `<div style="background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;"><div style="font-size: 11px; font-weight: 700; color: var(--text2); letter-spacing: 0.5px;">DURUM GÜNCELLE</div><div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;"><select id="durum-select" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);outline:none;cursor:pointer;"><option value="beklemede" ${k.durum==='beklemede'?'selected':''}>Beklemede</option><option value="teslim" ${k.durum==='teslim'?'selected':''}>Teslim Edildi</option><option value="iptal" ${k.durum==='iptal'?'selected':''}>İptal</option></select><select id="odeme-select" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);outline:none;cursor:pointer;"><option value="bekliyor" ${k.odeme_durumu==='bekliyor'?'selected':''}>Ödeme Bekliyor</option><option value="odendi" ${k.odeme_durumu==='odendi'?'selected':''}>Ödendi</option></select><button class="btn btn-primary btn-sm" onclick="updateKargoDurum('${k.id}')" style="padding:6px 14px;">Güncelle</button></div></div>`; } 
+  footerHtml += `<div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><button class="btn btn-outline btn-sm" onclick="printKargoFisi('${k.id}')">🖨️ Fiş Yazdır</button>`;
+  if (isAdmin) { footerHtml += `<div style="display: flex; gap: 8px;"><button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')">Düzenle</button><button class="btn btn-danger-outline btn-sm" onclick="deleteKargo('${k.id}')">Sil</button></div>`; } 
+  else if (isOwner) { if (k.durum === 'beklemede') { footerHtml += `<div style="display: flex; gap: 8px;"><button class="btn btn-outline btn-sm" onclick="openEditModal('${k.id}')">Düzenle</button><button class="btn btn-danger-outline btn-sm" onclick="deleteKargo('${k.id}')">Sil</button></div>`; } else { footerHtml += `<span style="font-size:11px;color:var(--text3);font-style:italic;">İşlem görmüş kargolar düzenlenemez.</span>`; } } 
+  else { footerHtml += `<div></div>`; }
+  footerHtml += `</div></div>`; document.getElementById('modal-footer').innerHTML = footerHtml; document.getElementById('kargo-modal').style.display = 'flex';
 }
 
 async function updateKargoDurum(id) {
-  const durum = document.getElementById('durum-select').value;
-  const odeme = document.getElementById('odeme-select').value;
-  await sb.from('kargolar').update({ durum, odeme_durumu: odeme, updated_at: new Date().toISOString() }).eq('id', id);
-  await sb.from('kargo_gecmis').insert({ kargo_id: id, durum, not: 'Admin tarafından güncellendi' });
-  toast('Durum güncellendi', 'success'); closeModal('kargo-modal');
-  const activePage = document.querySelector('.page.active')?.id;
-  if (activePage === 'page-admindashboard') loadAdminDashboard(); else if (activePage === 'page-tumkargolar') loadAdminKargolar();
+  const durum = document.getElementById('durum-select').value, odeme = document.getElementById('odeme-select').value;
+  await sb.from('kargolar').update({ durum, odeme_durumu: odeme, updated_at: new Date().toISOString() }).eq('id', id); await sb.from('kargo_gecmis').insert({ kargo_id: id, durum, not: 'Admin tarafından güncellendi' });
+  toast('Durum güncellendi', 'success'); closeModal('kargo-modal'); const activePage = document.querySelector('.page.active')?.id; if (activePage === 'page-admindashboard') loadAdminDashboard(); else if (activePage === 'page-tumkargolar') loadAdminKargolar();
 }
 
-// ─── EDIT MODAL ───
 async function openEditModal(id) {
-  closeModal('kargo-modal');
-  const { data: k } = await sb.from('kargolar').select('*').eq('id', id).single();
-  editingKargoId = id;
-  document.getElementById('edit-body').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-      <div><p style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Gönderici</p><div class="form-group"><label>Ad Soyad</label><input id="e-g-adsoyad" value="${k.g_adsoyad||''}"></div><div class="form-group"><label>Telefon</label><input id="e-g-tel" value="${k.g_tel||''}"></div><div class="form-group"><label>İl</label><input id="e-g-il" value="${k.g_il||''}"></div><div class="form-group"><label>Adres</label><textarea id="e-g-adres" rows="2">${k.g_adres||''}</textarea></div></div>
-      <div><p style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Alıcı</p><div class="form-group"><label>Ad Soyad</label><input id="e-a-adsoyad" value="${k.a_adsoyad||''}"></div><div class="form-group"><label>Telefon</label><input id="e-a-tel" value="${k.a_tel||''}"></div><div class="form-group"><label>İl</label><input id="e-a-il" value="${k.a_il||''}"></div><div class="form-group"><label>Adres</label><textarea id="e-a-adres" rows="2">${k.a_adres||''}</textarea></div></div>
-    </div>
-    <div class="form-row"><div class="form-group"><label>Ödeme Alınacak mı?</label><select id="e-odeme-tipi" onchange="toggleUcret('e-ucret', this.value)"><option value="hayir" ${k.odeme_tipi!=='evet'?'selected':''}>Hayır</option><option value="evet" ${k.odeme_tipi==='evet'?'selected':''}>Evet (Tahsilatlı)</option></select></div><div class="form-group" id="e-ucret-kapsayici" style="display: ${k.odeme_tipi==='evet'?'block':'none'};"><label>Alınacak Tutar (₺)</label><input type="number" id="e-ucret" value="${k.ucret||0}" step="0.01" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"></div></div>
-    <div class="form-group"><label>Açıklama</label><textarea id="e-aciklama" rows="2">${k.aciklama||''}</textarea></div>`;
+  closeModal('kargo-modal'); const { data: k } = await sb.from('kargolar').select('*').eq('id', id).single(); editingKargoId = id;
+  document.getElementById('edit-body').innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;"><div><p style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Gönderici</p><div class="form-group"><label>Ad Soyad</label><input id="e-g-adsoyad" value="${k.g_adsoyad||''}"></div><div class="form-group"><label>Telefon</label><input id="e-g-tel" value="${k.g_tel||''}"></div><div class="form-group"><label>İl</label><input id="e-g-il" value="${k.g_il||''}"></div><div class="form-group"><label>Adres</label><textarea id="e-g-adres" rows="2">${k.g_adres||''}</textarea></div></div><div><p style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Alıcı</p><div class="form-group"><label>Ad Soyad</label><input id="e-a-adsoyad" value="${k.a_adsoyad||''}"></div><div class="form-group"><label>Telefon</label><input id="e-a-tel" value="${k.a_tel||''}"></div><div class="form-group"><label>İl</label><input id="e-a-il" value="${k.a_il||''}"></div><div class="form-group"><label>Adres</label><textarea id="e-a-adres" rows="2">${k.a_adres||''}</textarea></div></div></div><div class="form-row"><div class="form-group"><label>Ödeme Alınacak mı?</label><select id="e-odeme-tipi" onchange="toggleUcret('e-ucret', this.value)"><option value="hayir" ${k.odeme_tipi!=='evet'?'selected':''}>Hayır</option><option value="evet" ${k.odeme_tipi==='evet'?'selected':''}>Evet (Tahsilatlı)</option></select></div><div class="form-group" id="e-ucret-kapsayici" style="display: ${k.odeme_tipi==='evet'?'block':'none'};"><label>Alınacak Tutar (₺)</label><input type="number" id="e-ucret" value="${k.ucret||0}" step="0.01" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"></div></div><div class="form-group"><label>Açıklama</label><textarea id="e-aciklama" rows="2">${k.aciklama||''}</textarea></div>`;
   document.getElementById('edit-modal').style.display = 'flex';
 }
 
 async function saveEdit() {
-  const updates = {
-    g_adsoyad: document.getElementById('e-g-adsoyad').value.trim(), g_tel: document.getElementById('e-g-tel').value.trim(), g_il: document.getElementById('e-g-il').value.trim(), g_adres: document.getElementById('e-g-adres').value.trim(),
-    a_adsoyad: document.getElementById('e-a-adsoyad').value.trim(), a_tel: document.getElementById('e-a-tel').value.trim(), a_il: document.getElementById('e-a-il').value.trim(), a_adres: document.getElementById('e-a-adres').value.trim(),
-    odeme_tipi: document.getElementById('e-odeme-tipi').value, ucret: document.getElementById('e-odeme-tipi').value === 'evet' ? (parseFloat(document.getElementById('e-ucret').value)||0) : 0, aciklama: document.getElementById('e-aciklama').value.trim(), updated_at: new Date().toISOString(),
-  };
-  await sb.from('kargolar').update(updates).eq('id', editingKargoId);
-  toast('Kargo güncellendi', 'success'); closeModal('edit-modal');
-  const activePage = document.querySelector('.page.active')?.id;
-  if (activePage === 'page-tumkargolar') loadAdminKargolar(); else if (activePage === 'page-kargolarim') loadKargolarim();
+  const updates = { g_adsoyad: document.getElementById('e-g-adsoyad').value.trim(), g_tel: document.getElementById('e-g-tel').value.trim(), g_il: document.getElementById('e-g-il').value.trim(), g_adres: document.getElementById('e-g-adres').value.trim(), a_adsoyad: document.getElementById('e-a-adsoyad').value.trim(), a_tel: document.getElementById('e-a-tel').value.trim(), a_il: document.getElementById('e-a-il').value.trim(), a_adres: document.getElementById('e-a-adres').value.trim(), odeme_tipi: document.getElementById('e-odeme-tipi').value, ucret: document.getElementById('e-odeme-tipi').value === 'evet' ? (parseFloat(document.getElementById('e-ucret').value)||0) : 0, aciklama: document.getElementById('e-aciklama').value.trim(), updated_at: new Date().toISOString() };
+  await sb.from('kargolar').update(updates).eq('id', editingKargoId); toast('Kargo güncellendi', 'success'); closeModal('edit-modal'); const activePage = document.querySelector('.page.active')?.id; if (activePage === 'page-tumkargolar') loadAdminKargolar(); else if (activePage === 'page-kargolarim') loadKargolarim();
 }
 
-// ─── RENDER HELPERS ───
 function kargoTable(data, isAdmin) {
-  return `<table><thead><tr><th>Takip No</th>${isAdmin ? '<th>Müşteri</th>' : ''}<th>Gönderici</th><th>Alıcı</th><th>Durum</th><th>Ödeme</th><th>Tarih</th><th></th></tr></thead><tbody>${data.map(k=>`<tr><td data-label="Takip No"><span class="tracking-no">${k.tracking_no}</span></td>${isAdmin ? `<td data-label="Müşteri Hesap" style="font-size:12px;color:var(--text2)">${k.profiles ? k.profiles.first_name+' '+k.profiles.last_name : '—'}</td>` : ''}<td data-label="Gönderici">${k.g_adsoyad}<br><span style="font-size:11px;color:var(--text3)">${k.g_il||''}</span></td><td data-label="Alıcı">${k.a_adsoyad}<br><span style="font-size:11px;color:var(--text3)">${k.a_il||''}</span></td><td data-label="Kargo Durumu">${badgeHtml(k.durum)}</td><td data-label="Ödeme Tutarı">${badgeOdeme(k.odeme_durumu)}<br><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)">₺${parseFloat(k.ucret||0).toFixed(2)}</span></td><td data-label="İşlem Tarihi" style="font-size:12px;color:var(--text3)">${fmtDate(k.created_at)}</td><td data-label="İşlem"><button class="action-btn" onclick="showKargoDetail('${k.id}')">Kargo Detayını Gör</button></td></tr>`).join('')}</tbody></table>`;
+  return `<table><thead><tr><th>Takip No</th>${isAdmin ? '<th>Müşteri</th>' : ''}<th>Gönderici</th><th>Alıcı</th><th>Durum</th><th>Ödeme</th><th>Tarih</th><th></th></tr></thead><tbody>${data.map(k=>`<tr><td data-label="Takip No"><span class="tracking-no">${k.tracking_no}</span></td>${isAdmin ? `<td data-label="Müşteri Hesap" style="font-size:12px;color:var(--text2)">${k.profiles ? k.profiles.first_name+' '+k.profiles.last_name : '—'}</td>` : ''}<td data-label="Gönderici">${k.g_adsoyad}<br><span style="font-size:11px;color:var(--text3)">${k.g_il||''}</span></td><td data-label="Alıcı">${k.a_adsoyad}<br><span style="font-size:11px;color:var(--text3)">${k.a_il||''}</span></td><td data-label="Kargo Durumu">${badgeHtml(k.durum)}</td><td data-label="Ödeme Tutarı">${badgeOdeme(k.odeme_durumu)}<br><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)">₺${parseFloat(k.ucret||0).toFixed(2)}</span></td><td data-label="İşlem Tarihi" style="font-size:12px;color:var(--text3)">${fmtDate(k.created_at)}</td><td data-label="İşlem"><button class="action-btn" onclick="showKargoDetail('${k.id}')">Detay</button></td></tr>`).join('')}</tbody></table>`;
 }
-
-function kargoTableSmall(data) {
-  return `<table><thead><tr><th>Takip No</th><th>Alıcı</th><th>Durum</th></tr></thead><tbody>${data.map(k=>`<tr><td data-label="Takip No"><span class="tracking-no" style="font-size:11px">${k.tracking_no}</span></td><td data-label="Alıcı" style="font-size:12px">${k.a_adsoyad}</td><td data-label="Durum">${badgeHtml(k.durum)}</td></tr>`).join('')}</tbody></table>`;
-}
-
-function odemelerTableSmall(data) {
-  return `<table><thead><tr><th>Takip No</th><th>Alıcı</th><th>Tutar</th></tr></thead><tbody>${data.map(k=>`<tr><td data-label="Takip No"><span class="tracking-no" style="font-size:11px">${k.tracking_no}</span></td><td data-label="Alıcı" style="font-size:12px">${k.a_adsoyad}</td><td data-label="Tutar" style="font-family:'DM Mono',monospace;font-size:12px">₺${parseFloat(k.ucret||0).toFixed(2)}</td></tr>`).join('')}</tbody></table>`;
-}
-
-function badgeHtml(durum) { const labels = { beklemede:'Beklemede', teslim:'Teslim Edildi', iptal:'İptal' }; return `<span class="badge badge-${durum}">${labels[durum]||durum}</span>`; }
-function badgeOdeme(d) { return `<span class="badge badge-${d==='odendi'?'odendi':'bekliyor'}">${d==='odendi'?'Ödendi':'Bekliyor'}</span>`; }
-function durumLabel(d) { return { beklemede:'Beklemede', teslim:'Teslim Edildi', iptal:'İptal' }[d] || d; }
-function emptyState(msg) { return `<div class="empty-state"><div class="empty-icon">📦</div><p>${msg}</p></div>`; }
-function fmtDate(d) { return new Date(d).toLocaleDateString('tr-TR', { day:'2-digit', month:'2-digit', year:'numeric' }); }
-function fmtDateFull(d) { return new Date(d).toLocaleString('tr-TR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }); }
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-// ─── ICONS ───
-function svgHome() { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`; }
-function svgBox() { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`; }
-function svgPlus() { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`; }
-function svgUsers() { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>`; }
-function svgChart() { return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`; }
-
-// ─── TOAST ───
-function toast(msg, type='') { const el = document.getElementById('toast'); el.textContent = msg; el.className = 'show' + (type ? ' '+type : ''); setTimeout(()=> el.className = '', 3000); }
-['kargo-modal','edit-modal','sql-modal'].forEach(id => { document.getElementById(id)?.addEventListener('click', e => { if (e.target.id === id) closeModal(id); }); });
-
-// ─── KARGO SİLME ───
-async function deleteKargo(id) {
-  const onay = confirm('Bu kargoyu silmek istediğinize emin misiniz?'); if (!onay) return;
-  const { error } = await sb.from('kargolar').delete().eq('id', id);
-  if (error) { alert('Hata: ' + error.message); return; }
-  toast('Kargo silindi!', 'success'); closeModal('kargo-modal');
-  const activePage = document.querySelector('.page.active')?.id;
-  if (activePage === 'page-kargolarim') loadKargolarim(); else if (activePage === 'page-tumkargolar') loadAdminKargolar(); else if (activePage === 'page-musteridashboard') loadMusteriDashboard();
-}
-
-// ─── FİŞ YAZDIRMA ───
-async function printKargoFisi(id) {
-  const { data: k } = await sb.from('kargolar').select('*').eq('id', id).single();
-  const printWindow = window.open('', '_blank', 'width=560,height=794');
-  printWindow.document.write(`<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><title>Kargo Fişi - ${k.tracking_no}</title><style>@page{size:A4 portrait;margin:12mm;}*,*::before,*::after{box-sizing:border-box;}body{font-family:'Helvetica Neue','Helvetica','Arial',sans-serif;color:#111;margin:0;padding:0;font-size:10pt;line-height:1.4;}.header-table{width:100%;border-collapse:collapse;margin-bottom:5px;}.logo-text{font-size:24pt;letter-spacing:-0.5px;color:#000;}.logo-text strong{font-weight:900;}.logo-text span{font-weight:300;color:#333;padding-left:2px;}.meta-container{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:20px;}.tracking-number{font-size:12pt;font-weight:bold;color:#333;}.header-meta{font-size:8.5pt;color:#444;text-align:right;}.address-table{width:100%;border-collapse:collapse;margin-bottom:20px;}.address-cell{width:50%;vertical-align:top;border:1px solid #111;padding:12px;}.address-cell.receiver{border-left:none;background-color:#fafafa;}.section-title{font-size:7.5pt;font-weight:bold;text-transform:uppercase;color:#555;border-bottom:1px solid #111;padding-bottom:4px;margin-bottom:6px;}.name-field{font-size:10.5pt;font-weight:bold;margin-bottom:4px;}.address-field{font-size:9pt;color:#222;min-height:40px;}.phone-field{font-weight:bold;margin-top:6px;font-size:9pt;}.notes-box{border:1px dashed #444;padding:10px;font-size:8.5pt;margin-bottom:30px;}.payment-wrapper{border-top:2px solid #000;padding-top:12px;margin-top:20px;}.payment-table{width:100%;border-collapse:collapse;}.payment-info-cell{vertical-align:middle;}.payment-status-title{font-size:8pt;font-weight:bold;text-transform:uppercase;color:#555;}.payment-status-value{font-size:11pt;font-weight:bold;margin-top:2px;}.payment-amount-cell{text-align:right;vertical-align:middle;}.payment-amount-title{font-size:8pt;font-weight:bold;text-transform:uppercase;color:#555;}.payment-amount-value{font-size:18pt;font-weight:900;color:#000;}.footer-notice{text-align:center;font-size:7pt;color:#777;margin-top:15px;}</style></head><body><table class="header-table"><tr><td class="logo-text"><strong>EFE</strong><span>KARGO</span></td></tr></table><div class="meta-container"><div class="tracking-number">Takip No: ${k.tracking_no}</div><div class="header-meta">Tarih: ${new Date(k.created_at).toLocaleDateString('tr-TR')}<br>Otomasyon Fişi</div></div><table class="address-table"><tr><td class="address-cell"><div class="section-title">Gönderici</div><div class="name-field">${k.g_adsoyad}</div><div class="address-field">${k.g_adres||'Sistemde Kayıtlı Adres'}<br>${k.g_il||''}</div><div class="phone-field">Tel: ${k.g_tel}</div></td><td class="address-cell receiver"><div class="section-title">Alıcı</div><div class="name-field">${k.a_adsoyad}</div><div class="address-field">${k.a_adres||''}<br><strong>${k.a_il||''}</strong></div><div class="phone-field">Tel: ${k.a_tel||'-'}</div></td></tr></table><div class="notes-box"><strong>Kargo Açıklaması / İçerik:</strong> ${k.aciklama||'Belirtilmedi'}</div><div class="payment-wrapper"><table class="payment-table"><tr><td class="payment-info-cell"><div class="payment-status-title">Ödeme Türü / Durumu</div><div class="payment-status-value">${k.odeme_tipi==='evet'?'KAPIDA ÖDEME (TAHSİLATLI)':'ÖDEME YOK (DİREKT TESLİM)'}</div></td><td class="payment-amount-cell">${k.odeme_tipi==='evet'?`<div class="payment-amount-title">Tahsil Edilecek Tutar</div><div class="payment-amount-value">${parseFloat(k.ucret||0).toLocaleString('tr-TR',{minimumFractionDigits:2})} ₺</div>`:''}</td></tr></table><div class="footer-notice">Efe Kargo Lojistik Otomasyon Sistemi</div></div><script>window.onload=function(){window.print();window.close();}<\/script></body></html>`);
-  printWindow.document.close();
-}
-</script>
-</body>
-</html>
+function kargoTableSmall(data) { return `<table><thead><tr><th>Takip No</th><th>Alıcı</th><th>Durum</th></tr></thead><tbody>${data.map(k=>`<tr><td data-label="Takip No"><span class="tracking-no" style="font-size:11px">${k.tracking_no}</span></td><td data-label="Alıcı" style="font-size:12px">${k.a_adsoyad}</td><td data-label="Durum">${badgeHtml(k.durum)}</td></tr>`).join('')}</tbody></table>`; }
+...
