@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <title>KargoNet — Online Kargo Sistemi</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -594,11 +594,12 @@ tr:hover td { background: var(--bg); }
   pointer-events: none !important; /* İkonu tıklamalara karşı "hayalet" yapar, alttaki kutuya direkt tıklanır */
 }
 
-/* 3. Seçim (Select) Kutularını %100 Tıklanabilir Yap ve Ok İşaretini Zorla Değiştir */
+/* 3. Seçim (Select) Kutularını %100 Tıklanabilir Yap (iPhone Uyumlu) */
 select {
-  -webkit-appearance: none !important; /* Tarayıcının orijinal okunu ZORLA siler */
+  -webkit-appearance: none !important;
   -moz-appearance: none !important;
   appearance: none !important;
+  background-color: var(--surface) !important; /* iPhone'da boşluğa tıklama hatasını önler, kutuyu katılaştırır */
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A3A2A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: right 12px center !important;
@@ -606,6 +607,8 @@ select {
   padding-right: 36px !important;
   cursor: pointer !important;
   width: 100%;
+  position: relative; 
+  z-index: 10; /* Kutuyu tıklamalar için en öne getirir */
 }
 </style>
 </head>
