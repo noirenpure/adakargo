@@ -534,13 +534,17 @@ tr:hover td { background: var(--bg); }
   .form-row { grid-template-columns: 1fr; gap: 10px; }
   .card-header { flex-direction: column; align-items: stretch; gap: 12px; position: relative; z-index: 10; }
   
-  /* Arama Kutusundaki İkon Çakışmasını Düzelttik */
-  .search-bar { width: 100%; position: relative; z-index: 1; }
-  .search-bar svg { z-index: 2; left: 12px; pointer-events: none; } /* İkonun tıklamayı engellemesini önler */
-  .search-bar input { padding-left: 36px !important; } /* Yazıyı ikondan uzağa iter */
+/* Arama Kutusundaki İkon Çakışmasını KÖKÜNDEN Düzelttik */
+  .search-bar { width: 100%; position: relative; }
+  .search-bar svg { 
+    z-index: 2; left: 12px; 
+    pointer-events: none !important; /* İkonun ve görünmez alanının tıklamayı engellemesini KESİNLİKLE önler */
+    height: 14px; /* Boyunu kısıtladık ki aşağı taşıp alttaki kutuyu örtmesin */
+  } 
+  .search-bar input { padding-left: 36px !important; position: relative; z-index: 1; }
   
-  .filters { width: 100%; display: flex; flex-direction: row; gap: 10px; }
-  .filters select { flex: 1; width: 100%; min-width: 0; }
+  .filters { width: 100%; display: flex; flex-direction: row; gap: 10px; position: relative; z-index: 99; /* Filtreleri tıklanabilir kılmak için en öne aldık */ }
+  .filters select { flex: 1; width: 100%; min-width: 0; position: relative; z-index: 100; cursor: pointer; }
   
   /* Genel kutuları çok az küçülttük */
   input, select, textarea, .btn { padding: 10px !important; font-size: 13px !important; } 
