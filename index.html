@@ -624,7 +624,6 @@ select {
 <body>
 
 
-<!-- SQL MODAL -->
 <div id="sql-modal" class="modal-overlay" style="display:none; z-index:10000;">
   <div class="modal" style="width:680px;">
     <div class="modal-header">
@@ -639,7 +638,6 @@ select {
   </div>
 </div>
 
-<!-- AUTH SCREEN -->
 <div id="auth-screen">
   <div class="auth-card">
     <div class="auth-logo">
@@ -659,7 +657,6 @@ select {
 
     <div id="auth-error" class="auth-error" style="display:none;"></div>
 
-    <!-- LOGIN -->
     <div id="login-form">
       <div class="form-group">
         <label>E-posta</label>
@@ -672,7 +669,6 @@ select {
       <button class="btn btn-primary" id="login-btn" onclick="login()">Giriş Yap</button>
     </div>
 
-    <!-- REGISTER -->
     <div id="register-form" style="display:none;">
       <div class="form-row">
         <div class="form-group">
@@ -701,7 +697,6 @@ select {
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <aside class="sidebar">
     <div class="sidebar-logo">
@@ -724,7 +719,6 @@ select {
   </aside>
 
   <main class="main">
-    <!-- CUSTOMER DASHBOARD -->
     <div id="page-musteridashboard" class="page">
       <div class="page-header">
         <h1>Genel Bakış</h1>
@@ -747,7 +741,6 @@ select {
       </div>
     </div>
 
-    <!-- NEW CARGO -->
     <div id="page-yenikargo" class="page">
       <div class="page-header">
         <h1>Yeni Kargo Oluştur</h1>
@@ -795,7 +788,6 @@ select {
       </div>
     </div>
 
-    <!-- MY CARGOS -->
     <div id="page-kargolarim" class="page">
       <div class="page-header">
         <h1>Kargolarım</h1>
@@ -820,7 +812,6 @@ select {
       </div>
     </div>
 
-    <!-- ADMIN DASHBOARD -->
     <div id="page-admindashboard" class="page">
       <div class="page-header">
         <h1>Yönetim Paneli</h1>
@@ -839,7 +830,6 @@ select {
       </div>
     </div>
 
-    <!-- ALL CARGOS ADMIN -->
     <div id="page-tumkargolar" class="page">
       <div class="page-header">
         <h1>Tüm Kargolar</h1>
@@ -868,8 +858,10 @@ select {
             <button id="m-btn-teslim" class="mobile-filter-btn" onclick="setMobileAdminFilter('teslim')">Teslim Edildi</button>
           </div>
         </div>
+        <div id="admin-kargolar-table"></div>
+      </div>
+    </div>
 
-    <!-- CUSTOMERS ADMIN -->
     <div id="page-musteriler" class="page">
       <div class="page-header"><h1>Müşteriler</h1></div>
       <div class="card">
@@ -877,7 +869,6 @@ select {
       </div>
     </div>
 
-    <!-- REPORTS -->
     <div id="page-raporlar" class="page">
       <div class="page-header"><h1>Raporlar</h1></div>
       <div class="stats-grid" id="rapor-stats" style="grid-template-columns:repeat(3,1fr);"></div>
@@ -889,7 +880,6 @@ select {
   </main>
 </div>
 
-<!-- KARGO DETAIL MODAL -->
 <div id="kargo-modal" class="modal-overlay" style="display:none;">
   <div class="modal">
     <div class="modal-header">
@@ -901,7 +891,6 @@ select {
   </div>
 </div>
 
-<!-- EDIT MODAL -->
 <div id="edit-modal" class="modal-overlay" style="display:none;">
   <div class="modal">
     <div class="modal-header">
@@ -916,7 +905,6 @@ select {
   </div>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
 <script>
@@ -1846,4 +1834,3 @@ async function printKargoFisi(id) {
 </script>
 </body>
 </html>
-
